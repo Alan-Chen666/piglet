@@ -17,13 +17,12 @@ from lib_piglet.expanders.pddl_expander import pddl_expander
 
 
 class graph_search(base_search):
-    
 
     # Search the path between two state
     # @param start_state The start of the path
     # @param goal_state Then goal of the path
     # @return a list of locations between start and goal
-    def get_path(self,start_state, goal_state):
+    def get_path(self, start_state, goal_state):
         self.open_list_.clear()
         self.all_nodes_list_.clear()
         self.reset_statistic()
@@ -35,10 +34,10 @@ class graph_search(base_search):
         self.all_nodes_list_[start_node] = start_node
 
         # continue while there are still nods on OPEN
-        while (len(self.open_list_) > 0):
+        while len(self.open_list_) > 0:
             current: search_node = self.open_list_.pop()
             current.close()
-            self.nodes_expanded_ +=1
+            self.nodes_expanded_ += 1
 
             # If have time_limit, break time out search.
             if self.time_limit_ < sys.maxsize:
@@ -65,7 +64,7 @@ class graph_search(base_search):
                     # we need this open_handle_ to update the node in open list in the future
                     succ_node.priority_queue_handle_ = self.open_list_.push(succ_node)
                     self.all_nodes_list_[succ_node] = succ_node
-                    self.nodes_generated_+= 1
+                    self.nodes_generated_ += 1
 
                 # succ_node only have the same hash and state comparing with the on in the all nodes list
                 # It's not the one in the all nodes list,  we need the real node in the all nodes list.
@@ -79,7 +78,7 @@ class graph_search(base_search):
         self.status_ = "Failed"
         return None
 
-    def relax(self, exist:search_node, new:search_node):
+    def relax(self, exist: search_node, new: search_node):
         if exist.g_ > new.g_:
             exist.f_ = new.f_
             exist.g_ = new.g_
