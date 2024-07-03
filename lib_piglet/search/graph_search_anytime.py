@@ -39,15 +39,10 @@ class graph_search_anytime(base_search):
 
         # continue while there are still nodes on OPEN
         while len(self.open_list_) > 0:
-            current.priority_queue_handle_ = None
             current = self.log("close", self.open_list_.pop())
+            current.priority_queue_handle_ = None
             current.close()
             self.nodes_expanded_ += 1
-
-            # if current.expanded:
-            #     self.re_expansions_ +=1
-            # else:
-            #     current.expanded=True
 
             # If have time_limit, break time out search.
             if self.time_limit_ < sys.maxsize:
