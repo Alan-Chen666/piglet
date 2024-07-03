@@ -29,7 +29,7 @@ class graph_search_anytime(base_search):
         self.start_ = start_state
         self.goal_ = goal_state
         self.start_time = time.process_time()
-        start_node = self.generate(start_state, None, None)
+        start_node = self.log("source", self.generate(start_state, None, None))
         self.open_list_.push(start_node)
         self.all_nodes_list_[start_node] = start_node
         self.UB = sys.maxsize
@@ -39,9 +39,9 @@ class graph_search_anytime(base_search):
 
         # continue while there are still nodes on OPEN
         while len(self.open_list_) > 0:
-            current: search_node = self.open_list_.pop()
-            current.close()
             current.priority_queue_handle_ = None
+            current = self.log("close", self.open_list_.pop())
+            current.close()
             self.nodes_expanded_ += 1
 
             # if current.expanded:
@@ -58,6 +58,7 @@ class graph_search_anytime(base_search):
                         return None
                     else:
                         # If out of time, but have current best, return suboptimal solution
+                        self.log("solution", self.solution_.paths_[-1], optimal=False)
                         self.status_ = "Suboptimal"
                         return self.solution_
 
@@ -68,13 +69,13 @@ class graph_search_anytime(base_search):
                 if self.first_solution_time_ == None:
                     self.first_solution_time_ = time.process_time() - self.start_time
                 continue
-
+            self.log("expand", current)
             # expand the current node
-            for succ in self.expander_.expand(current):
+            for state, action in self.expander_.expand(current):
                 # each successor is a (state, action) tuple which
                 # which we map to a corresponding search_node and push
                 # then push onto the OPEN list
-                succ_node = self.generate(succ[0], succ[1], current)
+                succ_node = self.log("generate", self.generate(state, action, current))
 
                 if succ_node.g_ + succ_node.h_ > self.UB:
                     # Prune the node if unweighted f is larger than upper bound.
@@ -99,6 +100,7 @@ class graph_search_anytime(base_search):
 
         self.runtime_ = time.process_time() - self.start_time
         self.status_ = "Optimal"
+        self.log("solution", self.solution_.paths_[-1], optimal=True)
         return self.solution_
 
     def relax(self, exist: search_node, new: search_node):
@@ -107,9 +109,8 @@ class graph_search_anytime(base_search):
             exist.g_ = new.g_
             exist.h_ = new.h_
             exist.depth_ = new.depth_
-
             exist.parent_ = new.parent_
-
+            self.log("relax", exist)
             if exist.is_closed():
                 # move the closed node into open list and mark open
                 exist.priority_queue_handle_ = self.open_list_.push(exist)

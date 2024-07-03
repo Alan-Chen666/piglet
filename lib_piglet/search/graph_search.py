@@ -14,6 +14,8 @@ import sys, time
 from lib_piglet.search.base_search import base_search
 from lib_piglet.search.base_search import search_node
 from lib_piglet.expanders.pddl_expander import pddl_expander
+from lib_piglet.utils.identifier import identifier
+from lib_piglet.utils.serialisable import serialise
 
 
 class graph_search(base_search):
@@ -29,13 +31,13 @@ class graph_search(base_search):
         self.start_ = start_state
         self.goal_ = goal_state
         self.start_time = time.process_time()
-        start_node = self.generate(start_state, None, None)
+        start_node = self.log("source", self.generate(start_state, None, None))
         self.open_list_.push(start_node)
         self.all_nodes_list_[start_node] = start_node
 
         # continue while there are still nods on OPEN
         while len(self.open_list_) > 0:
-            current: search_node = self.open_list_.pop()
+            current = self.log("close", self.open_list_.pop())
             current.close()
             self.nodes_expanded_ += 1
 
@@ -47,18 +49,19 @@ class graph_search(base_search):
                     return None
             # goal example. if successful, return the solution
             if self.goal_test_function_(current.state_, goal_state):
+                self.log("solution", current)
                 self.solution_ = self.solution(current)
                 self.status_ = "Success"
                 self.runtime_ = time.process_time() - self.start_time
                 return self.solution_
 
+            self.log("expand", current)
             # expand the current node
-            for succ in self.expander_.expand(current):
+            for state, action in self.expander_.expand(current):
                 # each successor is a (state, action) tuple which
                 # which we map to a corresponding search_node and push
                 # then push onto the OPEN list
-
-                succ_node = self.generate(succ[0], succ[1], current)
+                succ_node = self.log("generate", self.generate(state, action, current))
                 # succ_node not in any list, add it to open list
                 if succ_node not in self.all_nodes_list_:
                     # we need this open_handle_ to update the node in open list in the future
@@ -71,7 +74,6 @@ class graph_search(base_search):
                 exist = self.all_nodes_list_[succ_node]
                 if not exist.is_closed():
                     self.relax(exist, succ_node)
-
         # OPEN list is exhausted and we did not find the goal
         # return failure instead of a solution
         self.runtime_ = time.process_time() - self.start_time
@@ -91,4 +93,5 @@ class graph_search(base_search):
             if exist.priority_queue_handle_ is not None:
                 # If handle exist, we are using bin_heap. We need to tell bin_heap one element's value
                 # is decreased. Bin_heap will update the heap to maintain priority structure.
+                self.log("relax", exist)
                 self.open_list_.decrease(exist.priority_queue_handle_)

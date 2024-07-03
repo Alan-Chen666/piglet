@@ -1,14 +1,29 @@
+from random import randint
+import time
 from lib_piglet.cli.cli_tool import *
 from lib_piglet.cli.run_tool import *
 import os
 
+from lib_piglet.loggers.search_trace_logger import search_trace_logger
+from lib_piglet.utils.identifier import identifier
+
+
+def get_random_id():
+    return identifier(round(time.time() * 1000))
+
+
+def get_logger(filename: str):
+    return search_trace_logger(file=f"{filename}-{get_random_id()}.trace.yaml")
 
 
 def main():
 
     args = parse_args()
     if args.problem == None and sys.stdin.isatty():
-        print("err; You must provide a problem scenario file or provide problem through standard input", file = sys.stderr)
+        print(
+            "err; You must provide a problem scenario file or provide problem through standard input",
+            file=sys.stderr,
+        )
         print("piglet.py -h for help", file=sys.stderr)
         exit(1)
 
@@ -19,7 +34,12 @@ def main():
         source = sys.stdin
     else:
         if not os.path.exists(args.problem):
-            print("err; Given problem scenario file does not exist: {}".format(args.problem), file = sys.stderr)
+            print(
+                "err; Given problem scenario file does not exist: {}".format(
+                    args.problem
+                ),
+                file=sys.stderr,
+            )
             exit(1)
         source = open(args.problem)
 
@@ -32,7 +52,7 @@ def main():
     multi_tasks = []
     problem_amount = 0
     for line in source:
-        if problem_amount >=  args.problem_number:
+        if problem_amount >= args.problem_number:
             break
         content = line.strip().split()
         if len(content) == 0 or content[0] == "#" or content[0] == "c":
@@ -45,26 +65,20 @@ def main():
 
         task = parse_problem(content, domain_type)
 
-        if args.multi_agent:
-            multi_tasks.append(task)
-            search = run_multi_tasks(domain_type,multi_tasks,args)
-        else:
-            search = run_task(task, args)
-        problem_amount += 1
-        print(statistic_string(args,search,args.anytime))
-        if args.output_file:
-            out.write(statistic_csv(args,search,args.anytime))
+        with get_logger("-".join([args.framework, args.strategy])) as logger:
+            if args.multi_agent:
+                multi_tasks.append(task)
+                search = run_multi_tasks(domain_type, multi_tasks, args)
+            else:
+                search = run_task(task, args, logger)
+            problem_amount += 1
+            print(statistic_string(args, search, args.anytime))
+            if args.output_file:
+                out.write(statistic_csv(args, search, args.anytime))
 
     if args.output_file:
         out.close()
 
 
-
-
-
-        
 if __name__ == "__main__":
     main()
-
-
-

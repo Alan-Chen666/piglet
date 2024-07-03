@@ -14,6 +14,7 @@ from lib_piglet.expanders import (
     graph_expander,
     pddl_expander,
 )
+from lib_piglet.loggers.base_logger import base_logger
 from lib_piglet.search import (
     tree_search,
     graph_search,
@@ -33,15 +34,21 @@ expander: base_expander.base_expander = None
 domain = None
 
 
+def get_views(e: base_search.base_search):
+    return (
+        e.expander_.domain_.views if hasattr(e.expander_.domain_, "views") else dict()
+    )
+
+
 # run task with cli arguments
 # @param t A task object describe the task domain, start and goal
 # @param args Arguments object from cli interface
 # @return search A search engine with search result
-def run_task(t: task, args: args_interface):
+def run_task(t: task, args: args_interface, logger: base_logger):
     global search_engine, expander, domain
     same_problem = False
 
-    # if serach engine exist and domain file doesn't change, just update start and goal
+    # if search engine exist and domain file doesn't change, just update start and goal
     if (
         search_engine is not None
         and domain.domain_file_ is not None
@@ -133,7 +140,8 @@ def run_task(t: task, args: args_interface):
         )
 
     search_engine.heuristic_weight_ = args.heuristic_weight
-
+    search_engine.logger_ = logger
+    logger.head(views=get_views(search_engine))
     if args.framework == "iterative":
         if args.strategy == "depth" and args.id_threshold_type == "depth":
             search_engine.get_path(
@@ -164,7 +172,7 @@ def run_multi_tasks(domain_type, tasks: list, args: args_interface):
     global search_engine, expander, domain
     same_problem = False
 
-    # if serach engine exist and domain file doesn't change, just update start and goal
+    # if search engine exist and domain file doesn't change, just update start and goal
     if search_engine is not None:
         if domain_type == DOMAIN_TYPE.gridmap:
             start_list = []

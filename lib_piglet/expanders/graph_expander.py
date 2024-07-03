@@ -14,14 +14,15 @@ from lib_piglet.search.search_node import search_node
 
 
 class graph_action:
-    
-    def __init__(self, action: int, cost:int):
+
+    def __init__(self, action: int, cost: int):
         self.move_: int = action
         self.cost_: int = cost
 
+
 class graph_expander(base_expander):
 
-    def __init__(self,g: graph ):
+    def __init__(self, g: graph):
         self.domain_: graph = g
         self.succ_: list = []
 
@@ -30,11 +31,9 @@ class graph_expander(base_expander):
         current_vertex: vertex = current_node.state_
         for v, cost in current_vertex.get_connections():
             successor = v
-            action = graph_action(v.get_id(),cost)
+            action = graph_action(v.get_id(), cost)
             self.succ_.append((successor, action))
         return self.succ_[:]
 
     def __str__(self):
         return self.domain_.domain_file_
-
-

@@ -6,21 +6,46 @@
 #
 import sys
 from lib_piglet.expanders.base_expander import base_expander
+from lib_piglet.loggers.base_logger import base_logger
 from lib_piglet.search.search_node import search_node
 from lib_piglet.solution.solution import solution
-from lib_piglet.cli.cli_tool import statistic_template,statistic_header
+from lib_piglet.cli.cli_tool import statistic_template, statistic_header
 from typing import Callable
+
+from lib_piglet.utils.identifier import identifier
+from lib_piglet.utils.serialisable import serialise
 
 
 class base_search:
+    def log(self, event: str, current: search_node, **kwargs):
+        self.logger_.event(
+            type=event,
+            id=identifier(current.state_),
+            f=current.f_,
+            g=current.g_,
+            h=current.h_,
+            depth=current.depth_,
+            pId=identifier(current.parent_.state_) if current.parent_ else None,
+            **serialise(current.state_),
+            **kwargs
+        )
+        return current
 
+    def __init__(
+        self,
+        open_list,
+        expander: base_expander,
+        heuristic_function=None,
+        time_limit: int = sys.maxsize,
+        logger: base_logger = base_logger,
+    ):
+        self.logger_ = logger
 
-    def __init__(self, open_list, expander:base_expander, heuristic_function = None, time_limit: int = sys.maxsize):
-        self.open_list_ = open_list
+        self.open_list_: list[search_node] = open_list
         self.expander_: base_expander = expander
         self.time_limit_ = time_limit
         self.heuristic_function_: Callable = heuristic_function
-        self.goal_test_function_ : Callable= self.expander_.domain_.is_goal
+        self.goal_test_function_: Callable = self.expander_.domain_.is_goal
         self.all_nodes_list_ = {}
 
         self.nodes_generated_: int = 0
@@ -31,47 +56,48 @@ class base_search:
         self.start_: object = None
         self.goal_: object = None
         self.status_: str = None
-        self.heuristic_weight_:float = 1.0
+        self.heuristic_weight_: float = 1.0
         self.max_depth_ = 0
 
     # Search the path between two state
     # @param start_state The start of the path
     # @param goal_state Then goal of the path
     # @return a list of locations between start and goal
-    def get_path(self,start_state, goal_state):
+    def get_path(self, start_state, goal_state):
         raise NotImplementedError()
 
     # Generate search_node objects for a given state
-    # For this operatin we we need to know:
+    # For this operation we we need to know:
     # @param state: the state which the search node maps to
     # @param action: the action which generated the state (could be [None])
     # @param parent: the parent state (could be [None])
     def generate(self, state, action, parent: search_node):
-
-        retval = search_node()
-        retval.state_ = state
-        retval.action_ = action
-        if (parent == None):
+        result = search_node()
+        result.state_ = state
+        result.action_ = action
+        if parent == None:
             # initialise the node from scratch
             # NB: we usually do this only for the start node
-            retval.g_ = 0
-            retval.depth_ = 0
-            retval.timestep_ = 0
+            result.g_ = 0
+            result.depth_ = 0
+            result.timestep_ = 0
         else:
             # initialise the node based on its parent
-            retval.g_ = parent.g_ + action.cost_
-            retval.depth_ = parent.depth_ + 1
-            retval.parent_ = parent
-            retval.timestep_= parent.timestep_ + 1
-
+            result.g_ = parent.g_ + action.cost_
+            result.depth_ = parent.depth_ + 1
+            result.parent_ = parent
+            result.timestep_ = parent.timestep_ + 1
 
         if self.heuristic_function_ is None:
-            retval.h_ = 0
-            retval.f_ = retval.g_
+            result.h_ = 0
+            result.f_ = result.g_
         else:
-            retval.h_ = self.heuristic_function_(self.expander_.domain_,retval.state_, self.goal_)
-            retval.f_ = retval.g_ + retval.h_ * self.heuristic_weight_
-        return retval
+            result.h_ = self.heuristic_function_(
+                self.expander_.domain_, result.state_, self.goal_
+            )
+            print(result.h_, self.heuristic_weight_)
+            result.f_ = result.g_ + result.h_ * self.heuristic_weight_
+        return result
 
     # extract the computed solution by following backpointers
     def solution(self, goal_node: search_node):
@@ -79,27 +105,29 @@ class base_search:
         depth = goal_node.depth_
         cost = goal_node.g_
         sol = []
-        while (tmp != None):
+        while tmp != None:
             sol.append(tmp)
             tmp = tmp.parent_
 
         sol.reverse()
-        return solution(sol,depth,cost)
+        return solution(sol, depth, cost)
 
     # Get statistic information
     # @return list A list of Statistic information
     def get_statistic(self):
         sta_ = [self.status_]
-        if self.solution_!=None:
+        if self.solution_ != None:
             sta_ += self.solution_.get_solution_info()
         else:
             sta_ += [None, None]
-        sta_ += [self.nodes_expanded_,
-                self.nodes_generated_,
-                round(self.runtime_,4),
-                self.start_,
-                self.goal_,
-                self.expander_]
+        sta_ += [
+            self.nodes_expanded_,
+            self.nodes_generated_,
+            round(self.runtime_, 4),
+            self.start_,
+            self.goal_,
+            self.expander_,
+        ]
 
         return sta_
 
@@ -111,9 +139,3 @@ class base_search:
         self.solution_: solution = None
         self.start_ = None
         self.goal_ = None
-
-
-
-
-
-
