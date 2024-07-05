@@ -39,7 +39,7 @@ python3 piglet.py -p ./example/arena2.min.scen -f graph -s a-star --log trace
 
 ### Piglet Library
 
-piglet provides a variety of flexible search algorithms. These algorithms are
+Piglet provides a variety of flexible search algorithms. These algorithms are
 able to help you to build your application.
 
 #### Example
