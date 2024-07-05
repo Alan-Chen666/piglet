@@ -2,6 +2,8 @@
 
 # Piglet
 
+Piglet is a library of search algorithms that you can not only readily use, but incorporate into your application.
+
 ## Requirement
 
 python >= 3.6
