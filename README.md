@@ -1,4 +1,6 @@
-# Welcome to piglet
+![image](https://github.com/ShortestPathLab/piglet/assets/15244945/d708cd6a-60f3-4fc9-88c2-af90bcb8cac9)
+
+# Piglet
 
 ## Requirement
 
