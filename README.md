@@ -22,17 +22,28 @@ $ piglet.py --help
 ```
 
 run a scenario:
+
 ```
-$ python3 piglet.py -p ./example/example_n_puzzle_scenario.scen -f graph -s uniform  
+$ python3 piglet.py -p ./example/example_n_puzzle_scenario.scen -f graph -s uniform
+```
+
+### Generating search traces
+
+Use search traces to analyse and debug algorithms in [Posthoc](https://posthoc.pathfinding.ai). Add the `--log trace` argument to make Piglet output search traces.
+
+```bash
+python3 piglet.py -p ./example/arena2.min.scen -f graph -s a-star --log trace
 ```
 
 ### Piglet Library
-piglet provides a variety of flexible search algorithms. These algorithms are 
+
+piglet provides a variety of flexible search algorithms. These algorithms are
 able to help you to build your application.
 
-#### Example 
+#### Example
 
-To use an algorithm you need a domain instance, an expander instance and a search instance. 
+To use an algorithm you need a domain instance, an expander instance and a search instance.
+
 ```python
 import os,sys
 from lib_piglet.domains import gridmap
@@ -52,7 +63,7 @@ expander = grid_expander(gm)
 # and the expander to it.
 search = tree_search(bin_heap(), expander)
 
-# start search by proving a start state and goal state. For gridmap a state is a (x,y) tuple 
+# start search by proving a start state and goal state. For gridmap a state is a (x,y) tuple
 solution = search.get_path((1,2),(10,2))
 
 # print solution
