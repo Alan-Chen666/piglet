@@ -8,14 +8,17 @@
 
 import sys, random
 from functools import total_ordering
+from typing import Generic, TypeVar
+
+State = TypeVar("State")
 
 
-class search_node:
+class search_node(Generic[State]):
 
     def __init__(self):
         # some default values for uninitialised nodes
         self.action_: object = None
-        self.state_: object = None
+        self.state_: State = None
         self.parent_: object = None
         self.g_: float = 0
         self.depth_: int = 0

@@ -1,0 +1,49 @@
+version: 1.4.0
+views:
+  main:
+  - $: rect
+    alpha: 1
+    fill: '${{ ({source: color.green, close: color.red, expand: color.orange, generate:
+      color.yellow, solution: color.blue})[$.type] ?? theme.accent }}'
+    height: 1
+    width: 1
+    x: ${{ $.x }}
+    y: ${{ $.y }}
+pivot:
+  scale: 1
+  x: ${{ $.x + 0.5 }}
+  y: ${{ $.y + 0.5 }}
+events:
+- {depth: 0, f: 3.60555, g: 0, h: 3.60555, id: DLnnOqpa, pId: null, type: source, x: 262, y: 48}
+- {depth: 0, f: 3.60555, g: 0, h: 3.60555, id: DLnnOqpa, pId: null, type: close, x: 262, y: 48}
+- {depth: 0, f: 3.60555, g: 0, h: 3.60555, id: DLnnOqpa, pId: null, type: expand, x: 262, y: 48}
+- {depth: 1, f: 3.82843, g: 1, h: 2.82843, id: DLnmAsTu, pId: DLnnOqpa, type: generate, x: 261, y: 48}
+- {depth: 1, f: 5.47214, g: 1, h: 4.47214, id: DLnmAtI4, pId: DLnnOqpa, type: generate, x: 263, y: 48}
+- {depth: 1, f: 4.16228, g: 1, h: 3.16228, id: DLnmAtxK, pId: DLnnOqpa, type: generate, x: 262, y: 47}
+- {depth: 1, f: 5.24264, g: 1, h: 4.24264, id: DLnmAtK8, pId: DLnnOqpa, type: generate, x: 262, y: 49}
+- {depth: 1, f: 3.64607, g: 1.41, h: 2.23607, id: DLnmAHmw, pId: DLnnOqpa, type: generate, x: 261, y: 47}
+- {depth: 1, f: 5.53311, g: 1.41, h: 4.12311, id: DLnmAtCU, pId: DLnnOqpa, type: generate, x: 263, y: 47}
+- {depth: 1, f: 6.41, g: 1.41, h: 5.0, id: DLnmAsVy, pId: DLnnOqpa, type: generate, x: 263, y: 49}
+- {depth: 1, f: 5.01555, g: 1.41, h: 3.60555, id: DLnmAtUs, pId: DLnnOqpa, type: generate, x: 261, y: 49}
+- {depth: 1, f: 3.64607, g: 1.41, h: 2.23607, id: DLnmAHmw, pId: DLnnOqpa, type: close, x: 261, y: 47}
+- {depth: 1, f: 3.64607, g: 1.41, h: 2.23607, id: DLnmAHmw, pId: DLnnOqpa, type: expand, x: 261, y: 47}
+- {depth: 2, f: 3.82421, g: 2.41, h: 1.41421, id: DLnmAtG0, pId: DLnmAHmw, type: generate, x: 260, y: 47}
+- {depth: 2, f: 5.57228, g: 2.41, h: 3.16228, id: DLnmAtpu, pId: DLnmAHmw, type: generate, x: 262, y: 47}
+- {depth: 2, f: 4.41, g: 2.41, h: 2.0, id: DLnmAHpC, pId: DLnmAHmw, type: generate, x: 261, y: 46}
+- {depth: 2, f: 5.23843, g: 2.41, h: 2.82843, id: DLnmAtRm, pId: DLnmAHmw, type: generate, x: 261, y: 48}
+- {depth: 2, f: 3.82, g: 2.82, h: 1.0, id: DLnmAtYA, pId: DLnmAHmw, type: generate, x: 260, y: 46}
+- {depth: 2, f: 5.82, g: 2.82, h: 3.0, id: DLnmAHoA, pId: DLnmAHmw, type: generate, x: 262, y: 46}
+- {depth: 2, f: 6.425549999999999, g: 2.82, h: 3.60555, id: DLnmAH72, pId: DLnmAHmw, type: generate, x: 262, y: 48}
+- {depth: 2, f: 5.05607, g: 2.82, h: 2.23607, id: DLnmAGUE, pId: DLnmAHmw, type: generate, x: 260, y: 48}
+- {depth: 2, f: 3.82, g: 2.82, h: 1.0, id: DLnmAtYA, pId: DLnmAHmw, type: close, x: 260, y: 46}
+- {depth: 2, f: 3.82, g: 2.82, h: 1.0, id: DLnmAtYA, pId: DLnmAHmw, type: expand, x: 260, y: 46}
+- {depth: 3, f: 3.82, g: 3.82, h: 0.0, id: DLnmAtJ6, pId: DLnmAtYA, type: generate, x: 259, y: 46}
+- {depth: 3, f: 5.82, g: 3.82, h: 2.0, id: DLnmAtpu, pId: DLnmAtYA, type: generate, x: 261, y: 46}
+- {depth: 3, f: 5.23421, g: 3.82, h: 1.41421, id: DLnmAtNe, pId: DLnmAtYA, type: generate, x: 260, y: 45}
+- {depth: 3, f: 5.23421, g: 3.82, h: 1.41421, id: DLnmAHsI, pId: DLnmAtYA, type: generate, x: 260, y: 47}
+- {depth: 3, f: 5.2299999999999995, g: 4.2299999999999995, h: 1.0, id: DLnmAGRy, pId: DLnmAtYA, type: generate, x: 259, y: 45}
+- {depth: 3, f: 6.466069999999999, g: 4.2299999999999995, h: 2.23607, id: DLnmAHrG, pId: DLnmAtYA, type: generate, x: 261, y: 45}
+- {depth: 3, f: 6.466069999999999, g: 4.2299999999999995, h: 2.23607, id: DLnmAHeg, pId: DLnmAtYA, type: generate, x: 261, y: 47}
+- {depth: 3, f: 5.2299999999999995, g: 4.2299999999999995, h: 1.0, id: DLnmAH3W, pId: DLnmAtYA, type: generate, x: 259, y: 47}
+- {depth: 3, f: 3.82, g: 3.82, h: 0.0, id: DLnmAtJ6, pId: DLnmAtYA, type: close, x: 259, y: 46}
+- {depth: 3, f: 3.82, g: 3.82, h: 0.0, id: DLnmAtJ6, pId: DLnmAtYA, type: solution, x: 259, y: 46}

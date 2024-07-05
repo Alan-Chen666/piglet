@@ -10,8 +10,10 @@ class search_trace_logger(file_logger):
 
     def head(self, **kwargs):
         self.verbatim(dump({"version": "1.4.0"}))
-        if "views" in kwargs:
+        if "views" in kwargs and kwargs["views"]:
             self.verbatim(dump({"views": kwargs["views"]}))
+        if "pivot" in kwargs and kwargs["pivot"]:
+            self.verbatim(dump({"pivot": kwargs["pivot"]}))
         self.verbatim("events:\n")
 
     def event(self, **kwargs):

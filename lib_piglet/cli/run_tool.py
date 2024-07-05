@@ -34,12 +34,6 @@ expander: base_expander.base_expander = None
 domain = None
 
 
-def get_views(e: base_search.base_search):
-    return (
-        e.expander_.domain_.views if hasattr(e.expander_.domain_, "views") else dict()
-    )
-
-
 # run task with cli arguments
 # @param t A task object describe the task domain, start and goal
 # @param args Arguments object from cli interface
@@ -141,7 +135,10 @@ def run_task(t: task, args: args_interface, logger: base_logger):
 
     search_engine.heuristic_weight_ = args.heuristic_weight
     search_engine.logger_ = logger
-    logger.head(views=get_views(search_engine))
+    logger.head(
+        views=search_engine.expander_.domain_.views(),
+        pivot=search_engine.expander_.domain_.pivot(),
+    )
     if args.framework == "iterative":
         if args.strategy == "depth" and args.id_threshold_type == "depth":
             search_engine.get_path(

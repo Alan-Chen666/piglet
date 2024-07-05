@@ -6,11 +6,13 @@
 
 import sys, argparse, os
 from enum import IntEnum
+from lib_piglet.loggers.loggers import loggers
 from lib_piglet.utils.tools import eprint
 
 
 # Describe parameters in arg parser result. For IDE convenient.
 class args_interface:
+    log: str
     problem: str
     framework: str
     strategy: str
@@ -118,13 +120,13 @@ def statistic_string(args, search, anytime):
             str(args.framework),
             args.strategy,
             *[str(x) for x in search.get_statistic()],
-            str(search.solution_)
+            str(search.solution_),
         )
     return template.format(
         str(args.framework),
         args.strategy,
         *[str(x) for x in search.get_statistic()],
-        "Hidden"
+        "Hidden",
     )
 
 
@@ -139,13 +141,13 @@ def statistic_csv(args, search, anytime):
             str(args.framework),
             args.strategy,
             *[str(x) for x in search.get_statistic()],
-            search.solution_
+            search.solution_,
         )
     return template.format(
         str(args.framework),
         args.strategy,
         *[str(x) for x in search.get_statistic()],
-        "Hidden"
+        "Hidden",
     )
 
 
@@ -168,6 +170,15 @@ def parse_args():
         default=None,
         help="Specify the problem scenario file. A problem scenario file  ",
         metavar="/Path/to/scenario_file",
+    )
+    parser.add_argument(
+        "-l",
+        "--log",
+        type=str,
+        default=None,
+        help=f"Specify a logging framework. Supported frameworks are [{', '.join(loggers.keys())}]",
+        choices=loggers.keys(),
+        metavar="trace",
     )
 
     parser.add_argument(

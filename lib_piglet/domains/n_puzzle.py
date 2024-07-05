@@ -8,6 +8,9 @@
 import math, sys
 from enum import IntEnum
 
+from lib_piglet.domains.base_domain import base_domain
+from lib_piglet.search.search_node import search_node
+
 
 def get_chunks(l, n):
     for i in range(0, len(l), n):
@@ -66,43 +69,44 @@ class puzzle_state:
     def __hash__(self):
         return hash(str(self.state_list_))
 
-    def __obj__(self):
+
+class n_puzzle(base_domain[puzzle_state]):
+    def views(self):
         return {
-            "width": self.width(),
-            "height": self.width(),
-            "board": chunk(self.state_list_, self.width()),
+            "tile": [
+                {
+                    "$": "rect",
+                    "width": 0.98,
+                    "height": 0.98,
+                    "fill": "${{ theme.foreground }}",
+                    "clear": True,
+                    "label-x": 0.1,
+                    "label-y": 0.85,
+                    "x": "${{ $.row }}",
+                    "y": "${{ $.col }}",
+                    "label-size": 0.5,
+                    "label-color": "${{ theme.background }}",
+                    "label": "${{ $.board[$.col][$.row] }}",
+                    "$if": "${{ $.board[$.col][$.row] != 'x' }}",
+                    "$info": {"tile": "${{ $.board[$.col][$.row] }}"},
+                }
+            ],
+            "main": [
+                {
+                    "$": "tile",
+                    "$for": {"$to": "${{ $.width * $.height }}"},
+                    "col": "${{ Math.floor($.i / $.width) }}",
+                    "row": "${{ $.i % $.width }}",
+                }
+            ],
         }
 
-
-class n_puzzle:
-    views = {
-        "tile": [
-            {
-                "$": "rect",
-                "width": 0.98,
-                "height": 0.98,
-                "fill": "${{ theme.foreground }}",
-                "clear": True,
-                "label-x": 0.1,
-                "label-y": 0.85,
-                "x": "${{ $.row }}",
-                "y": "${{ $.col }}",
-                "label-size": 0.5,
-                "label-color": "${{ theme.background }}",
-                "label": "${{ $.board[$.col][$.row] }}",
-                "$if": "${{ $.board[$.col][$.row] != 'x' }}",
-                "$info": {"tile": "${{ $.board[$.col][$.row] }}"},
-            }
-        ],
-        "main": [
-            {
-                "$": "tile",
-                "$for": {"$to": "${{ $.width * $.height }}"},
-                "col": "${{ Math.floor($.i / $.width) }}",
-                "row": "${{ $.i % $.width }}",
-            }
-        ],
-    }
+    def serialise(self, state: search_node[puzzle_state]):
+        return {
+            "width": state.state_.width(),
+            "height": state.state_.width(),
+            "board": chunk(state.state_.state_list_, state.state_.width()),
+        }
 
     # Initialize a problem
     # @param width The width of the puzzle

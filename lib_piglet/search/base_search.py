@@ -26,7 +26,7 @@ class base_search:
             h=current.h_,
             depth=current.depth_,
             pId=identifier(current.parent_.state_) if current.parent_ else None,
-            **serialise(current.state_),
+            **serialise(self.expander_.domain_, current),
             **kwargs
         )
         return current
@@ -95,7 +95,6 @@ class base_search:
             result.h_ = self.heuristic_function_(
                 self.expander_.domain_, result.state_, self.goal_
             )
-            print(result.h_, self.heuristic_weight_)
             result.f_ = result.g_ + result.h_ * self.heuristic_weight_
         return result
 

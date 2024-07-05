@@ -12,6 +12,9 @@
 
 import sys, math
 
+from lib_piglet.domains.base_domain import base_domain
+from lib_piglet.search.search_node import search_node
+
 
 class grid_joint_state:
 
@@ -62,7 +65,32 @@ class grid_joint_state:
         return {"agents": self.agent_locations_}
 
 
-class gridmap:
+grid_state = tuple[int, int]
+
+
+class gridmap(base_domain[grid_state]):
+
+    def views(self):
+        return {
+            "main": [
+                {
+                    "$": "rect",
+                    "width": 1,
+                    "height": 1,
+                    "fill": "${{ ({source: color.green, close: color.red, expand: color.orange, generate: color.yellow, solution: color.blue})[$.type] ?? theme.accent }}",
+                    "alpha": 1,
+                    "x": "${{ $.x }}",
+                    "y": "${{ $.y }}",
+                }
+            ]
+        }
+
+    def pivot(self):
+        return {"x": "${{ $.x + 0.5 }}", "y": "${{ $.y + 0.5 }}", "scale": 1}
+
+    def serialise(self, current: search_node[grid_state]):
+        [x, y] = current.state_
+        return {"x": y, "y": x}
 
     def __init__(self, filename: str):
         self.map_: list = []
@@ -120,7 +148,7 @@ class gridmap:
 
     # tells whether the tile at location @param index is traversable or not
     # @return True/False
-    def get_tile(self, loc: tuple):
+    def get_tile(self, loc: grid_state):
         x = loc[0]
         y = loc[1]
         if x < 0 or x >= self.height_ or y < 0 or y >= self.width_:
