@@ -116,7 +116,7 @@ def statistic_string(args, search, anytime, logger: base_logger | None = None):
     template, header = (
         (statistic_template, statistic_header)
         if anytime
-        else (anytime_statistic_template, anytime_statistic_header)
+        else (statistic_template, anytime_statistic_header)
     )
     params = (
         [
@@ -136,7 +136,7 @@ def statistic_string(args, search, anytime, logger: base_logger | None = None):
     if logger:
         logger.event(type="stats", **{k: v for k, v in zip(header, params)})
     else:
-        return template.format(*args)
+        return template.format(*params)
 
 
 # statistic to csv

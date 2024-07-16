@@ -75,7 +75,9 @@ def main():
             else:
                 search = run_task(task, args, logger)
             problem_amount += 1
-            stats = statistic_string(args, search, args.anytime, logger)
+            stats = statistic_string(
+                args, search, args.anytime, logger if args.log else None
+            )
             if stats:
                 print(stats)
             if args.output_file:
