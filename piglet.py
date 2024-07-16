@@ -20,6 +20,7 @@ def get_logger(filename: str, key: str):
 def main():
 
     args = parse_args()
+    log_mode = bool(args.log)
     if args.problem == None and sys.stdin.isatty():
         print(
             "err; You must provide a problem scenario file or provide problem through standard input",
@@ -44,7 +45,8 @@ def main():
             exit(1)
         source = open(args.problem)
 
-    print_header(args.anytime)
+    if not log_mode:
+        print_header(args.anytime)
     if args.output_file:
         out = open(args.output_file, "w+")
         out.write(csv_header(args.anytime))
@@ -73,7 +75,9 @@ def main():
             else:
                 search = run_task(task, args, logger)
             problem_amount += 1
-            print(statistic_string(args, search, args.anytime))
+            stats = statistic_string(args, search, args.anytime, logger)
+            if stats:
+                print(stats)
             if args.output_file:
                 out.write(statistic_csv(args, search, args.anytime))
 

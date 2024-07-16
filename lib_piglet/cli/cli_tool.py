@@ -6,6 +6,7 @@
 
 import sys, argparse, os
 from enum import IntEnum
+from lib_piglet.loggers.base_logger import base_logger
 from lib_piglet.loggers.loggers import loggers
 from lib_piglet.utils.tools import eprint
 
@@ -111,23 +112,31 @@ def csv_header(anytime):
 
 # statistic to string
 # @return str A string of statistic information
-def statistic_string(args, search, anytime):
-    template = statistic_template
-    if anytime:
-        template = anytime_statistic_template
-    if args.solution:
-        return template.format(
+def statistic_string(args, search, anytime, logger: base_logger | None = None):
+    template, header = (
+        (statistic_template, statistic_header)
+        if anytime
+        else (anytime_statistic_template, anytime_statistic_header)
+    )
+    params = (
+        [
             str(args.framework),
             args.strategy,
             *[str(x) for x in search.get_statistic()],
             str(search.solution_),
-        )
-    return template.format(
-        str(args.framework),
-        args.strategy,
-        *[str(x) for x in search.get_statistic()],
-        "Hidden",
+        ]
+        if args.solution
+        else [
+            str(args.framework),
+            args.strategy,
+            *[str(x) for x in search.get_statistic()],
+            "Hidden",
+        ]
     )
+    if logger:
+        logger.event(type="stats", **{k: v for k, v in zip(header, params)})
+    else:
+        return template.format(*args)
 
 
 # statistic to csv
