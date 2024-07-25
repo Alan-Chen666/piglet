@@ -14,7 +14,6 @@ from lib_piglet.expanders import (
     graph_expander,
     pddl_expander,
 )
-from lib_piglet.loggers.base_logger import base_logger
 from lib_piglet.search import (
     tree_search,
     graph_search,
@@ -23,7 +22,7 @@ from lib_piglet.search import (
     iterative_deepening,
     graph_search_anytime,
 )
-from lib_piglet.search_logger.search_logger import bind, search_logger
+from lib_piglet.logging.search_logger import bind, search_logger
 from lib_piglet.utils.data_structure import queue, stack, bin_heap
 from lib_piglet.utils.focal_priority_queue import focal_priority_queue
 from lib_piglet.heuristics import gridmap_h, n_puzzle_h, graph_h, pddl_h

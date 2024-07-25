@@ -1,7 +1,7 @@
-from lib_piglet.loggers.base_logger import base_logger
+from lib_piglet.output.base_output import base_output
 
 
-class file_logger(base_logger):
+class file_output(base_output):
     def __init__(self, **kwargs):
         self.args = kwargs
         if "file" in self.args:

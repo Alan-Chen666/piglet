@@ -10,9 +10,9 @@ from lib_piglet.cli.cli_tool import *
 from lib_piglet.cli.run_tool import *
 import os
 
-from lib_piglet.search_logger.search_logger import search_logger
+from lib_piglet.logging.search_logger import search_logger
 from lib_piglet.utils.identifier import identifier
-from lib_piglet.loggers.loggers import loggers
+from lib_piglet.output.outputs import outputs
 
 
 def get_random_id():
@@ -20,7 +20,7 @@ def get_random_id():
 
 
 def get_logger(filename: str, key: str):
-    logger = loggers[key] if key in loggers else base_logger
+    logger = outputs[key] if key in outputs else base_output
     return search_logger(
         logger=logger(file=f"{filename}-{get_random_id()}.trace.yaml"),
     )

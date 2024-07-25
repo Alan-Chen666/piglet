@@ -1,4 +1,4 @@
-class base_logger:
+class base_output:
     def __init__(self, **kwargs):
         pass
 

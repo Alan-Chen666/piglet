@@ -1,6 +1,6 @@
 from textwrap import shorten
 from typing import Iterable, TypeVar
-from lib_piglet.loggers.base_logger import base_logger
+from lib_piglet.output.base_output import base_output
 
 T = TypeVar("T")
 
@@ -15,7 +15,7 @@ def chunks(it: Iterable[T], n: int):
         yield lst[i : i + n]
 
 
-class print_logger(base_logger):
+class print_output(base_output):
 
     i = 0
 

@@ -6,8 +6,8 @@
 
 import sys, argparse, os
 from enum import IntEnum
-from lib_piglet.loggers.base_logger import base_logger
-from lib_piglet.loggers.loggers import loggers
+from lib_piglet.output.base_output import base_output
+from lib_piglet.output.outputs import outputs
 from lib_piglet.utils.tools import eprint
 
 
@@ -112,7 +112,7 @@ def csv_header(anytime):
 
 # statistic to string
 # @return str A string of statistic information
-def statistic_string(args, search, anytime, logger: base_logger | None = None):
+def statistic_string(args, search, anytime, logger: base_output | None = None):
     template, header = (
         (statistic_template, statistic_header)
         if anytime
@@ -185,8 +185,8 @@ def parse_args():
         "--log",
         type=str,
         default=None,
-        help=f"Specify a logging framework. Supported frameworks are [{', '.join(loggers.keys())}]",
-        choices=loggers.keys(),
+        help=f"Specify a logging framework. Supported frameworks are [{', '.join(outputs.keys())}]",
+        choices=outputs.keys(),
         metavar="trace",
     )
 

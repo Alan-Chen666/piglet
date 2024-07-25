@@ -1,8 +1,8 @@
-from lib_piglet.loggers.file_logger import file_logger
+from lib_piglet.output.file_output import file_output
 from yaml import dump
 
 
-class search_trace_logger(file_logger):
+class trace_output(file_output):
     out = ""
 
     def __init__(self, **kwargs):
