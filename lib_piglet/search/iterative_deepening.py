@@ -39,7 +39,7 @@ class iterative_deepening(base_search):
     # @param goal_state Then goal of the path
     # @return solution Contains a list of locations between start and goal
     def get_path(self, start_state, goal_state, threshold_type=ID_threshold.depth):
-        self.tree_search_engine.logger_ = self.logger_
+        self.tree_search_engine.listener_ = self.listener_
         self.open_list_.clear()
         self.reset_statistic()
         self.start_ = start_state

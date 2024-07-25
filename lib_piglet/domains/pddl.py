@@ -40,6 +40,8 @@ class pddl_goal:
 
 
 class pddl(base_domain[pddl_state]):
+    def get_name(self):
+        return "pddl"
 
     def __init__(self, domain_path: str, problem_path: str = None):
         self.parser_: PDDL_Parser = PDDL_Parser()

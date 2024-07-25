@@ -1,9 +1,16 @@
-from random import randint
+import sys
+
+if sys.version_info[0] < 3 or (sys.version_info[0] == 3 and sys.version_info[1] <= 10):
+    raise Exception("Requires Python 3.11 or newer")
+
+# ──────────────────────────────────────────────────────────────────────────────
+
 import time
 from lib_piglet.cli.cli_tool import *
 from lib_piglet.cli.run_tool import *
 import os
 
+from lib_piglet.search_logger.search_logger import search_logger
 from lib_piglet.utils.identifier import identifier
 from lib_piglet.loggers.loggers import loggers
 
@@ -14,7 +21,9 @@ def get_random_id():
 
 def get_logger(filename: str, key: str):
     logger = loggers[key] if key in loggers else base_logger
-    return logger(file=f"{filename}-{get_random_id()}.trace.yaml")
+    return search_logger(
+        logger=logger(file=f"{filename}-{get_random_id()}.trace.yaml"),
+    )
 
 
 def main():
@@ -76,7 +85,7 @@ def main():
                 search = run_task(task, args, logger)
             problem_amount += 1
             stats = statistic_string(
-                args, search, args.anytime, logger if args.log else None
+                args, search, args.anytime, logger.logger_ if args.log else None
             )
             if stats:
                 print(stats)

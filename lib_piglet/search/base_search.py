@@ -6,29 +6,17 @@
 #
 import sys
 from lib_piglet.expanders.base_expander import base_expander
-from lib_piglet.loggers.base_logger import base_logger
 from lib_piglet.search.search_node import search_node
+from lib_piglet.search.event_listener import event_listener
 from lib_piglet.solution.solution import solution
-from lib_piglet.cli.cli_tool import statistic_template, statistic_header
 from typing import Callable
-
-from lib_piglet.utils.identifier import identifier
-from lib_piglet.utils.serialisable import serialise
 
 
 class base_search:
+
     def log(self, event: str, current: search_node, **kwargs):
-        self.logger_.event(
-            type=event,
-            id=identifier(current.state_),
-            f=current.f_,
-            g=current.g_,
-            h=current.h_,
-            depth=current.depth_,
-            pId=identifier(current.parent_.state_) if current.parent_ else None,
-            **serialise(self.expander_.domain_, current),
-            **kwargs
-        )
+        if self.listener_:
+            self.listener_.log(event, current, **kwargs)
         return current
 
     def __init__(
@@ -37,9 +25,9 @@ class base_search:
         expander: base_expander,
         heuristic_function=None,
         time_limit: int = sys.maxsize,
-        logger: base_logger = base_logger,
+        listener: event_listener | None = None,
     ):
-        self.logger_ = logger
+        self.listener_ = listener
 
         self.open_list_: list[search_node] = open_list
         self.expander_: base_expander = expander

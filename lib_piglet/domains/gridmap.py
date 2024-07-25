@@ -69,28 +69,8 @@ grid_state = tuple[int, int]
 
 
 class gridmap(base_domain[grid_state]):
-
-    def views(self):
-        return {
-            "main": [
-                {
-                    "$": "rect",
-                    "width": 1,
-                    "height": 1,
-                    "fill": "${{ ({source: color.green, close: color.red, expand: color.orange, generate: color.yellow, solution: color.blue})[$.type] ?? theme.accent }}",
-                    "alpha": 1,
-                    "x": "${{ $.x }}",
-                    "y": "${{ $.y }}",
-                }
-            ]
-        }
-
-    def pivot(self):
-        return {"x": "${{ $.x + 0.5 }}", "y": "${{ $.y + 0.5 }}", "scale": 1}
-
-    def serialise(self, current: search_node[grid_state]):
-        [x, y] = current.state_
-        return {"x": y, "y": x}
+    def get_name(self):
+        return "grid"
 
     def __init__(self, filename: str):
         self.map_: list = []

@@ -62,41 +62,8 @@ class vertex:
 
 class graph(base_domain[vertex]):
 
-    def views(self):
-        return {
-            "main": [
-                {
-                    "$": "circle",
-                    "radius": 1,
-                    "fill": "${{ ({source: color.green, close: color.red, expand: color.orange, generate: color.yellow, solution: color.blue})[$.type] ?? theme.accent }}",
-                    "alpha": 1,
-                    "x": "${{ $.x }}",
-                    "y": "${{ $.y }}",
-                },
-                {
-                    "$": "path",
-                    "fill": "${{ ({source: color.green, close: color.red, expand: color.orange, generate: color.yellow, solution: color.blue})[$.type] ?? theme.accent }}",
-                    "points": [
-                        {
-                            "x": "${{ $.x }}",
-                            "y": "${{ $.y }}",
-                        },
-                        {
-                            "x": "${{ parent?.x ?? $.x }}",
-                            "y": "${{ parent?.y ?? $.y }}",
-                        },
-                    ],
-                    "line-width": 1,
-                },
-            ]
-        }
-
-    def pivot(self):
-        return {"x": "${{ $.x }}", "y": "${{ $.y }}", "scale": 1}
-
-    def serialise(self, current: search_node[vertex]):
-        [x, y] = current.state_.get_location()
-        return {"x": y, "y": x}
+    def get_name(self):
+        return "graph"
 
     vert_dict: dict
     num_vertices: int

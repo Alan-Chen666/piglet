@@ -23,6 +23,7 @@ from lib_piglet.search import (
     iterative_deepening,
     graph_search_anytime,
 )
+from lib_piglet.search_logger.search_logger import bind, search_logger
 from lib_piglet.utils.data_structure import queue, stack, bin_heap
 from lib_piglet.utils.focal_priority_queue import focal_priority_queue
 from lib_piglet.heuristics import gridmap_h, n_puzzle_h, graph_h, pddl_h
@@ -38,7 +39,7 @@ domain = None
 # @param t A task object describe the task domain, start and goal
 # @param args Arguments object from cli interface
 # @return search A search engine with search result
-def run_task(t: task, args: args_interface, logger: base_logger):
+def run_task(t: task, args: args_interface, logger: search_logger):
     global search_engine, expander, domain
     same_problem = False
 
@@ -134,11 +135,7 @@ def run_task(t: task, args: args_interface, logger: base_logger):
         )
 
     search_engine.heuristic_weight_ = args.heuristic_weight
-    search_engine.logger_ = logger
-    logger.head(
-        views=search_engine.expander_.domain_.views(),
-        pivot=search_engine.expander_.domain_.pivot(),
-    )
+    bind(search_engine, logger).head()
     if args.framework == "iterative":
         if args.strategy == "depth" and args.id_threshold_type == "depth":
             search_engine.get_path(

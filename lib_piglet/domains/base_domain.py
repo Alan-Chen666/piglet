@@ -7,11 +7,5 @@ State = TypeVar("State")
 
 
 class base_domain(Generic[State]):
-    def serialise(self, state: search_node[State]):
-        return dict()
-
-    def views(self):
-        return None
-
-    def pivot(self):
-        return None
+    def get_name(self):
+        return NotImplementedError("Domains must be given a name.")
