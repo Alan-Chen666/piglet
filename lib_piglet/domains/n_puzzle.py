@@ -123,7 +123,7 @@ class n_puzzle:
 
 
     def __str__(self):
-        return "{}-puzzle".format(self.size_)
+        return "{}-puzzle".format(self.size_ - 1) # -1 corrects for number of tiles naming convention
 
     def __parse_puzzle(self, file):
         puzzle_list = []
