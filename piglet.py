@@ -1,9 +1,9 @@
-import sys
+# import sys
 
-if sys.version_info[0] < 3 or (sys.version_info[0] == 3 and sys.version_info[1] <= 10):
-    raise Exception("Requires Python 3.11 or newer")
+# if sys.version_info[0] < 3 or (sys.version_info[0] == 3 and sys.version_info[1] <= 10):
+#     raise Exception("Requires Python 3.11 or newer")
 
-# ──────────────────────────────────────────────────────────────────────────────
+# # ──────────────────────────────────────────────────────────────────────────────
 
 import time
 from lib_piglet.cli.cli_tool import *
