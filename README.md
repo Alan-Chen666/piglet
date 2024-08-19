@@ -6,7 +6,7 @@ Piglet is a library of search algorithms that you can not only readily use, but 
 
 ## Requirements
 
-python >= 3.8
+python >= 3.11
 pyyaml == 6.0.2
 
 ## Install
