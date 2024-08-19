@@ -29,6 +29,7 @@ class graph_search(base_search):
         self.goal_ = goal_state
         self.start_time = time.process_time()
         start_node = self.log("source", self.generate(start_state, None, None))
+        self.log("destination", self.generate(goal_state, None, None))
         self.open_list_.push(start_node)
         self.all_nodes_list_[start_node] = start_node
 

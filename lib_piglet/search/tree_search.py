@@ -39,6 +39,7 @@ class tree_search(base_search):
             **{"depth_limit": depth_limit} if depth_limit != sys.maxsize else {},
             **{"cost_limit": cost_limit} if cost_limit != sys.maxsize else {}
         )
+        self.log("destination", self.generate(goal_state, None, None))
         self.open_list_.push(start_node)
 
         # For depth/cost limited search, we need to track the minimal threshold of nodes out of bound.

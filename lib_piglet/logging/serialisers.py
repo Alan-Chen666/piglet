@@ -51,6 +51,7 @@ class n_puzzle_serialiser(domain_serialiser[puzzle_state]):
             ],
             "main": [
                 {
+                    "$if": "${{ $.type != 'stats' }}",
                     "$": "tile",
                     "$for": {"$to": "${{ $.width * $.height }}"},
                     "col": "${{ Math.floor($.i / $.width) }}",
@@ -72,10 +73,11 @@ class grid_serialiser(domain_serialiser[grid_state]):
         return {
             "main": [
                 {
+                    "$if": "${{ $.type != 'stats' }}",
                     "$": "rect",
                     "width": 1,
                     "height": 1,
-                    "fill": "${{ ({source: color.green, close: color.red, expand: color.orange, generate: color.yellow, solution: color.blue})[$.type] ?? theme.accent }}",
+                    "fill": "${{ ({destination: color.red, source: color.green, close: color.red, expand: color.orange, generate: color.yellow, solution: color.blue})[$.type] ?? theme.accent }}",
                     "alpha": 1,
                     "x": "${{ $.x }}",
                     "y": "${{ $.y }}",
@@ -97,6 +99,7 @@ class graph_serialiser(domain_serialiser[vertex]):
         return {
             "main": [
                 {
+                    "$if": "${{ $.type != 'stats' }}",
                     "$": "circle",
                     "radius": 1,
                     "fill": "${{ ({source: color.green, close: color.red, expand: color.orange, generate: color.yellow, solution: color.blue})[$.type] ?? theme.accent }}",

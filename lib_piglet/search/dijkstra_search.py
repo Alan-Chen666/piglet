@@ -28,7 +28,7 @@ class dijkstra_search(base_search):
         self.max_depth_ = 0
         self.goal_ = target_state
         self.start_time = time.process_time()
-        start_node = self.log("source", self.generate(target_state, None, None))
+        start_node = self.log("source", self.generate(start_node, None, None))
         self.open_list_.push(start_node)
         self.all_nodes_list_[start_node] = start_node
 

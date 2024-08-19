@@ -165,7 +165,7 @@ def statistic_csv(args, search, anytime):
 def parse_args():
     parser = argparse.ArgumentParser(
         description="""
-     This is piglet commandline interface. You can use piglet-cli run a variety search algorithms. 
+     This is piglet command line interface. You can use piglet-cli run a variety search algorithms. 
      A problem scenario file must be provided with -p, unless you problems are passed in through stdin.
      The framework is graph search on default. You can switch to tree search by -f tree.
      The strategy is uniform-cost search by default. You can switch to breadth first, depth first or A-star by -s.
@@ -282,22 +282,30 @@ def parse_args():
         "--anytime",
         default=False,
         action="store_true",
-        help="Search in Anytime Weighted A* mode when having graph as framework and a-star as stragety",
+        help="Search in Anytime Weighted A* mode when having graph as framework and a-star as strategy",
     )
 
     parser.add_argument(
         "--focal",
         type=float,
         default=0,
-        help="Search with focal search mode when having graph as framework and a-star as stragety",
+        help="Search with focal search mode when having graph as framework and a-star as strategy",
     )
 
+    parser.add_argument(
+        "-x",
+        "--problem-index",
+        type=int,
+        default=0,
+        help="Solve problems starting from index x",
+        metavar=0,
+    )
     parser.add_argument(
         "-n",
         "--problem-number",
         type=int,
         default=sys.maxsize,
-        help="Solve only top n problem from the scenario file",
+        help="Solve only top n problems from the scenario file, offset by '--problem-index'",
         metavar=1000,
     )
 
@@ -326,7 +334,7 @@ def parse_args():
 
     if args.anytime and args.strategy != "a-star":
         print(
-            "err; anytime search only works with graph framework and a-start stragety",
+            "err; anytime search only works with graph framework and a-start strategy",
             file=sys.stderr,
         )
         exit(1)

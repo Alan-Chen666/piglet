@@ -5,6 +5,7 @@
 
 # # ──────────────────────────────────────────────────────────────────────────────
 
+from random import randint
 import time
 from lib_piglet.cli.cli_tool import *
 from lib_piglet.cli.run_tool import *
@@ -16,7 +17,7 @@ from lib_piglet.output.outputs import outputs
 
 
 def get_random_id():
-    return identifier(round(time.time() * 1000))
+    return identifier(round(time.time() * 1000) + randint(0, 10000))
 
 
 def get_logger(filename: str, key: str):
@@ -62,12 +63,11 @@ def main():
 
     domain_type = None
     multi_tasks = []
-    problem_amount = 0
+    seen = 0
+    ran = 0
     for line in source:
-        if problem_amount >= args.problem_number:
-            break
         content = line.strip().split()
-        if len(content) == 0 or content[0] == "#" or content[0] == "c":
+        if should_ignore(content):
             continue
 
         if not header_readed:
@@ -75,25 +75,35 @@ def main():
             header_readed = True
             continue
 
-        task = parse_problem(content, domain_type)
+        if seen >= args.problem_index:
+            if ran >= args.problem_number:
+                break
 
-        with get_logger("-".join([args.framework, args.strategy]), args.log) as logger:
-            if args.multi_agent:
-                multi_tasks.append(task)
-                search = run_multi_tasks(domain_type, multi_tasks, args)
-            else:
-                search = run_task(task, args, logger)
-            problem_amount += 1
-            stats = statistic_string(
-                args, search, args.anytime, logger.logger_ if args.log else None
-            )
-            if stats:
-                print(stats)
-            if args.output_file:
-                out.write(statistic_csv(args, search, args.anytime))
+            task = parse_problem(content, domain_type)
 
+            with get_logger(
+                "-".join([args.framework, args.strategy]), args.log
+            ) as logger:
+                if args.multi_agent:
+                    multi_tasks.append(task)
+                    search = run_multi_tasks(domain_type, multi_tasks, args)
+                else:
+                    search = run_task(task, args, logger)
+                stats = statistic_string(
+                    args, search, args.anytime, logger.logger_ if args.log else None
+                )
+                if stats:
+                    print(stats)
+                if args.output_file:
+                    out.write(statistic_csv(args, search, args.anytime))
+            ran += 1
+        seen += 1
     if args.output_file:
         out.close()
+
+
+def should_ignore(content):
+    return len(content) == 0 or content[0] == "#" or content[0] == "c"
 
 
 if __name__ == "__main__":
