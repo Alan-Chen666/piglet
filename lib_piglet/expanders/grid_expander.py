@@ -53,11 +53,10 @@ class grid_expander(base_expander):
             self.succ_.append((new_state, a))
         return self.succ_[:]
 
-        # return a list with all the applicable/valid actions
-        # at tile (x, y)
-        # @param loc A (x,y) coordinate tuple
-        # @return a list of gridaction object.
-
+    # return a list with all the applicable/valid actions
+    # at tile (x, y)
+    # @param loc A (x,y) coordinate tuple
+    # @return a list of gridaction object.
     def get_actions(self, loc: tuple):
         x = loc[0]
         y = loc[1]
@@ -72,39 +71,39 @@ class grid_expander(base_expander):
         if (self.domain_.get_tile((x,y - 1))):
             retval.append(grid_action())
             retval[-1].move_ = Move_Actions.MOVE_LEFT
-            retval[-1].cost_ = 1;
+            retval[-1].cost_ = 1
 
         if (self.domain_.get_tile((x,y + 1))):
             retval.append(grid_action())
             retval[-1].move_ = Move_Actions.MOVE_RIGHT
-            retval[-1].cost_ = 1;
+            retval[-1].cost_ = 1
 
         if (self.domain_.get_tile((x - 1,y))):
             retval.append(grid_action())
             retval[-1].move_ = Move_Actions.MOVE_UP
-            retval[-1].cost_ = 1;
+            retval[-1].cost_ = 1
 
         if (self.domain_.get_tile((x + 1,y))):
             retval.append(grid_action())
             retval[-1].move_ = Move_Actions.MOVE_DOWN
-            retval[-1].cost_ = 1;
+            retval[-1].cost_ = 1
 
         if (self.domain_.get_tile((x - 1,y - 1))):
             retval.append(grid_action())
             retval[-1].move_ = Move_Actions.MOVE_UP_LEFT
-            retval[-1].cost_ = 1.41;
+            retval[-1].cost_ = 1.41
         if (self.domain_.get_tile((x - 1,y + 1))):
             retval.append(grid_action())
             retval[-1].move_ = Move_Actions.MOVE_UP_RIGHT
-            retval[-1].cost_ = 1.41;
+            retval[-1].cost_ = 1.41
         if (self.domain_.get_tile((x + 1,y + 1))):
             retval.append(grid_action())
             retval[-1].move_ = Move_Actions.MOVE_DOWN_RIGHT
-            retval[-1].cost_ = 1.41;
+            retval[-1].cost_ = 1.41
         if (self.domain_.get_tile((x + 1,y - 1))):
             retval.append(grid_action())
             retval[-1].move_ = Move_Actions.MOVE_DOWN_LEFT
-            retval[-1].cost_ = 1.41;
+            retval[-1].cost_ = 1.41
 
         return retval
 
@@ -219,27 +218,27 @@ class grid_joint_expander(base_expander):
         if (self.domain_.get_tile((x, y - 1))):
             retval.append(grid_action())
             retval[-1].move_ = Move_Actions.MOVE_LEFT
-            retval[-1].cost_ = 1;
+            retval[-1].cost_ = 1
 
         if (self.domain_.get_tile((x, y + 1))):
             retval.append(grid_action())
             retval[-1].move_ = Move_Actions.MOVE_RIGHT
-            retval[-1].cost_ = 1;
+            retval[-1].cost_ = 1
 
         if (self.domain_.get_tile((x - 1, y))):
             retval.append(grid_action())
             retval[-1].move_ = Move_Actions.MOVE_UP
-            retval[-1].cost_ = 1;
+            retval[-1].cost_ = 1
 
         if (self.domain_.get_tile((x + 1, y))):
             retval.append(grid_action())
             retval[-1].move_ = Move_Actions.MOVE_DOWN
-            retval[-1].cost_ = 1;
+            retval[-1].cost_ = 1
 
         if (self.domain_.get_tile((x, y))):
             retval.append(grid_action())
             retval[-1].move_ = Move_Actions.MOVE_WAIT
-            retval[-1].cost_ = 1;
+            retval[-1].cost_ = 1
 
         return retval
 

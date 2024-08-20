@@ -22,7 +22,6 @@ def pigelet_multi_agent_heuristic(domain,current_state, goal_state):
 def manhattan_heuristic(current_state, goal_state):
     return abs(current_state[0] - goal_state[0]) + abs(current_state[1] - goal_state[1])
 
-
 def straight_heuristic(current_state, goal_state):
     return round(math.sqrt((current_state[0] - goal_state[0])**2 + (current_state[1] - goal_state[1])**2), 5)
 
