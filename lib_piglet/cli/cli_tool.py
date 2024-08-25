@@ -112,7 +112,7 @@ def csv_header(anytime):
 
 # statistic to string
 # @return str A string of statistic information
-def statistic_string(args, search, anytime, logger: base_output | None = None):
+def statistic_string(args, search, anytime, logger: base_output = None):
     template, header = (
         (statistic_template, statistic_header)
         if anytime

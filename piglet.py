@@ -17,7 +17,7 @@ from lib_piglet.output.outputs import outputs
 
 
 def get_random_id():
-    return identifier(round(time.time() * 1000) + randint(0, 10000))
+    return identifier(f"{round(time.time() * 1000) + randint(0, 10000)}")
 
 
 def get_logger(filename: str, key: str):

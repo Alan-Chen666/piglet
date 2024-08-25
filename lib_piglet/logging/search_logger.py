@@ -35,16 +35,19 @@ class search_logger(event_listener):
             self.logger_.head()
 
     def log(self, event: str, current: search_node, **kwargs):
+        def serialise(s):
+            return serialiser.serialise(s)
+
         serialiser = self.get_serialiser()
         self.logger_.event(
             type=event,
-            id=identifier(current.state_),
+            id=identifier(serialise(current)),
             f=current.f_,
             g=current.g_,
             h=current.h_,
             depth=current.depth_,
-            pId=identifier(current.parent_.state_) if current.parent_ else None,
-            **(serialiser.serialise(current) if serialiser else None),
+            pId=identifier(serialise(current.parent_)) if current.parent_ else None,
+            **(serialise(current) if serialiser else None),
             **kwargs
         )
         return current

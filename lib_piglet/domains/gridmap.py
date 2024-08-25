@@ -65,7 +65,7 @@ class grid_joint_state:
         return {"agents": self.agent_locations_}
 
 
-grid_state = tuple[int, int]
+grid_state = tuple
 
 
 class gridmap(base_domain[grid_state]):

@@ -25,7 +25,7 @@ class base_search:
         expander: base_expander,
         heuristic_function=None,
         time_limit: int = sys.maxsize,
-        listener: event_listener | None = None,
+        listener: event_listener = None,
     ):
         self.listener_ = listener
 

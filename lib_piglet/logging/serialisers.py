@@ -133,7 +133,7 @@ class graph_serialiser(domain_serialiser[vertex]):
         return {"x": y, "y": x}
 
 
-serialisers: dict[str, domain_serialiser] = {
+serialisers: dict = {
     "grid": grid_serialiser(),
     "n_puzzle": n_puzzle_serialiser(),
     "graph": graph_serialiser(),
