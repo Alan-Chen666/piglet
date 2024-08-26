@@ -180,6 +180,7 @@ def parse_args():
         help="Specify the problem scenario file. A problem scenario file  ",
         metavar="/Path/to/scenario_file",
     )
+
     parser.add_argument(
         "-l",
         "--log",
@@ -188,6 +189,15 @@ def parse_args():
         help=f"Specify a logging framework. Supported frameworks are [{', '.join(outputs.keys())}]",
         choices=outputs.keys(),
         metavar="trace",
+    )
+
+    parser.add_argument(
+        "-lf",
+        "--log-filename",
+        type=str,
+        default=None,
+        help=f"For '--log trace-file', specify an output filename. If not specified, a default filename will be used.",
+        metavar="output.trace.yaml",
     )
 
     parser.add_argument(

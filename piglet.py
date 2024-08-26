@@ -14,16 +14,17 @@ import os
 from lib_piglet.logging.search_logger import search_logger
 from lib_piglet.utils.identifier import identifier
 from lib_piglet.output.outputs import outputs
+from lib_piglet.output.base_output import base_output
 
 
 def get_random_id():
     return identifier(f"{round(time.time() * 1000) + randint(0, 10000)}")
 
 
-def get_logger(filename: str, key: str):
+def get_logger(key: str, filename: str):
     logger = outputs[key] if key in outputs else base_output
     return search_logger(
-        logger=logger(file=f"{filename}-{get_random_id()}.trace.yaml"),
+        logger=logger(file=filename),
     )
 
 
@@ -82,7 +83,9 @@ def main():
             task = parse_problem(content, domain_type)
 
             with get_logger(
-                "-".join([args.framework, args.strategy]), args.log
+                args.log,
+                args.log_filename
+                or f"{'-'.join([args.framework, args.strategy])}-{get_random_id()}.trace.yaml",
             ) as logger:
                 if args.multi_agent:
                     multi_tasks.append(task)
