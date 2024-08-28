@@ -23,7 +23,7 @@ $ piglet.py --help
 
 run a scenario:
 ```
-$ python3 piglet.py -p ./example/example_n_puzzle_scenario.scen -f graph -s uniform  
+$ python piglet.py -p ./example/example_n_puzzle_scenario.scen -f graph -s uniform  
 ```
 
 ### Piglet Library
