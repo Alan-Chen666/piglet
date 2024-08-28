@@ -226,6 +226,57 @@ def parse_args():
         ),
         metavar="uniform",
     )
+    
+    parser.add_argument(
+        "-x",
+        "--problem-index",
+        type=int,
+        default=0,
+        help="Solve problems starting from index x",
+        metavar=0,
+    )
+    parser.add_argument(
+        "-n",
+        "--problem-number",
+        type=int,
+        default=sys.maxsize,
+        help="Solve only top n problems from the scenario file, offset by '--problem-index'",
+        metavar=1000,
+    )
+
+    parser.add_argument(
+        "-t",
+        "--time-limit",
+        type=float,
+        default=30,
+        help="Specify the time-limit for the each search instance (seconds). Default: 30 seconds.",
+        metavar=30,
+    )
+
+    parser.add_argument(
+        "--solution", default=False, action="store_true", help="Print/write solution"
+    )
+    parser.add_argument(
+        "-o", "--output-file", type=str, default=None, help="Output results to a CSV file"
+    )
+    parser.add_argument(
+        "-l",
+        "--log",
+        type=str,
+        default=None,
+        help=f"Specify a logging framework. Supported frameworks are [{', '.join(outputs.keys())}].",
+        choices=outputs.keys(),
+        metavar="trace",
+    )
+
+    parser.add_argument(
+        "-lf",
+        "--log-filename",
+        type=str,
+        default=None,
+        help=f"For '--log trace-file', specify an output filename. If not specified, a default filename will be used.",
+        metavar="output.trace.yaml",
+    )
 
     parser.add_argument(
         "-i",
