@@ -41,12 +41,12 @@ class search_logger(event_listener):
         serialiser = self.get_serialiser()
         self.logger_.event(
             type=event,
-            id=identifier(serialise(current)),
+            id=identifier(current),
             f=current.f_,
             g=current.g_,
             h=current.h_,
             depth=current.depth_,
-            pId=identifier(serialise(current.parent_)) if current.parent_ else None,
+            pId=identifier(current.parent_) if current.parent_ else None,
             **(serialise(current) if serialiser else None),
             **kwargs
         )

@@ -5,8 +5,8 @@ from yaml import dump
 
 def encode(num: str):
     hasher = hashlib.sha1(num.encode())
-    return str(base64.urlsafe_b64encode(hasher.digest()))[2:10]
+    return str(base64.urlsafe_b64encode(hasher.digest()))[2:11]
 
 
 def identifier(obj: object):
-    return encode(dump(obj))
+    return encode(f"{id(obj)}")

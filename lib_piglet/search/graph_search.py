@@ -62,6 +62,7 @@ class graph_search(base_search):
                 succ_node = self.log("generate", self.generate(state, action, current))
                 # succ_node not in any list, add it to open list
                 if succ_node not in self.all_nodes_list_:
+                    self.log("keep", succ_node)
                     # we need this open_handle_ to update the node in open list in the future
                     succ_node.priority_queue_handle_ = self.open_list_.push(succ_node)
                     self.all_nodes_list_[succ_node] = succ_node
