@@ -29,18 +29,16 @@ class focal_priority_queue():
         self.weight:float = weight # The suboptimality weight
         self.focal: bin_heap = bin_heap(compare_function_2)
         self.open: bin_heap = bin_heap(compare_function_1)
-        self.f_min = None
-        self.w_f_min = None
-        self.id = 0 # The id of the next item inserted to FOCAL or OPEN
+        self.f_min: float = 0
+        self.w_f_min: float = 0
+        self.id: int = 0 # The id of the next item inserted to FOCAL or OPEN
         
         # For the item with an id, use this dictionary to store the corresponding handle of the item in FOCAL or in OPEN 
         # We need to use handle to tell bin_heap who to increase/decrease
         self.handles: Dict[int, item_handle] = {} 
     
     def push(self, item: search_node) -> int:
-        if self.f_min == None:
-            self.f_min = item.f_
-            self.w_f_min = item.f_ * self.weight
+
         id = self.id
         self.id += 1
 
@@ -58,9 +56,6 @@ class focal_priority_queue():
             self.handles[id].focal_handle =  self.focal.push(item)
         else:
             self.handles[id].open_handle = self.open.push(item)
-        
-        if self.focal.size() == 0:
-            self.update_focal()
         return id
         
     def pop(self)->search_node:
@@ -68,10 +63,15 @@ class focal_priority_queue():
         Pop the top node from FOCAL. 
         Don't forget to remove the corresponding heap_handle from the FOCAL.
         """
-        node: search_node = self.focal.pop()
-        self.handles.pop(node.priority_queue_handle_)
+
+        # we have update_focal called here, because we
+        # rely on the fact that we only pop nodes after 
+        # expanded successor nodes are all pushed into the queue.
         if self.focal.size() == 0:
             self.update_focal()
+        
+        node: search_node = self.focal.pop()
+        self.handles.pop(node.priority_queue_handle_)
         return node
 
     
@@ -114,8 +114,8 @@ class focal_priority_queue():
         self.open.clear()
         self.focal.clear()
         self.handles.clear()
-        self.f_min = None
-        self.w_f_min = None
+        self.f_min = 0
+        self.w_f_min = 0
         self.id = 0 
 
         
