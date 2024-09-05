@@ -13,7 +13,8 @@ from lib_piglet.utils.tools import eprint
 
 # Describe parameters in arg parser result. For IDE convenient.
 class args_interface:
-    log: str
+    log: list[str]
+    solution: bool
     problem: str
     framework: str
     strategy: str
@@ -25,6 +26,7 @@ class args_interface:
     heuristic_weight: float
     multi_agent: bool
     problem_number: int
+    problem_index: int
     anytime: bool
     id_threshold_type: int
     focal: bool
@@ -242,21 +244,12 @@ def parse_args():
         "-l",
         "--log",
         type=str,
-        default=None,
-        help=f"Specify a logging framework. Supported frameworks are [{', '.join(outputs.keys())}].",
-        choices=outputs.keys(),
-        metavar="trace",
-    )
-
-    parser.add_argument(
-        "-lf",
-        "--log-filename",
-        type=str,
-        default=None,
-        help=f"For '--log trace-file', specify an output filename. If not specified, a default filename will be used.",
-        metavar="output.trace.yaml",
-    )
-
+        default='print',
+        help=f"Specify a logging framework. Supported frameworks are [{', '.join(outputs.keys())}]. To output to a file, append a filename and choose the 'trace' logging framework.",
+        metavar=("trace", "filename.trace.yaml"),
+        nargs="*",
+    )    
+    
     parser.add_argument(
         "-i",
         "--id-threshold-type",

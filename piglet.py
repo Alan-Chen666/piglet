@@ -21,15 +21,17 @@ def get_random_id():
     return identifier(f"{round(time.time() * 1000) + randint(0, 10000)}")
 
 
-def get_logger(key: str, filename: str):
+def get_logger(spec: list[str] = [], auto_filename: str = None):
+    [key, filename,*_] = spec + [None] * 2
+    key = "trace-file" if key == "trace" and filename else key
     logger = outputs[key] if key in outputs else base_output
-    return search_logger(logger=logger(file=filename))
+    return search_logger(logger=logger(file=filename or auto_filename))
 
 
 def main():
 
     args = parse_args()
-    log_mode = bool(args.log)
+    log_mode = args.log != None
     if args.problem == None and sys.stdin.isatty():
         print("err; You must provide a problem scenario file or provide problem through standard input", file = sys.stderr)
         print("piglet.py -h for help", file=sys.stderr)
@@ -73,9 +75,7 @@ def main():
             task = parse_problem(content, domain_type)
 
             with get_logger(
-                args.log,
-                args.log_filename
-                or f"{'-'.join([args.framework, args.strategy])}-{get_random_id()}.trace.yaml",
+                args.log, f"{'-'.join([args.framework, args.strategy])}-{get_random_id()}.trace.yaml",
             ) as logger:
                 if args.multi_agent:
                     multi_tasks.append(task)

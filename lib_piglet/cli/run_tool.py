@@ -24,7 +24,7 @@ from lib_piglet.search import (
 )
 from lib_piglet.logging.search_logger import bind, search_logger
 from lib_piglet.utils.data_structure import queue, stack, bin_heap
-from lib_piglet.utils.focal_priority_queue import focal_priority_queue
+# from lib_piglet.utils.focal_priority_queue import focal_priority_queue
 from lib_piglet.heuristics import gridmap_h, n_puzzle_h, graph_h, pddl_h
 
 import sys
