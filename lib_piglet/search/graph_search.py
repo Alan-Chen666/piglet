@@ -28,16 +28,14 @@ class graph_search(base_search):
         self.start_ = start_state
         self.goal_ = goal_state
         self.start_time = time.process_time()
-        start_node = self.generate(start_state, None, None)
-        self.log("source", start_node)
+        start_node = self.log("source", self.generate(start_state, None, None))
         self.log("destination", self.generate(goal_state, None, None))
         self.open_list_.push(start_node)
         self.all_nodes_list_[start_node] = start_node
 
         # continue while there are still nods on OPEN
         while len(self.open_list_) > 0:
-            current = self.open_list_.pop()
-            self.log("close", current)
+            current = self.log("close", self.open_list_.pop())
             current.close()
             self.nodes_expanded_ += 1
 
@@ -61,8 +59,7 @@ class graph_search(base_search):
                 # each successor is a (state, action) tuple which
                 # which we map to a corresponding search_node and push
                 # then push onto the OPEN list
-                succ_node = self.generate(state, action, current)
-                self.log("generate", succ_node)
+                succ_node = self.log("generate", self.generate(state, action, current))
                 # succ_node not in any list, add it to open list
                 if succ_node not in self.all_nodes_list_:
                     self.log("keep", succ_node)
