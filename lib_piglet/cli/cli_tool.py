@@ -13,7 +13,7 @@ from lib_piglet.utils.tools import eprint
 
 # Describe parameters in arg parser result. For IDE convenient.
 class args_interface:
-    log: list[str]
+    log: list
     solution: bool
     problem: str
     framework: str

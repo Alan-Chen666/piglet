@@ -21,7 +21,7 @@ def get_random_id():
     return identifier(f"{round(time.time() * 1000) + randint(0, 10000)}")
 
 
-def get_logger(spec: list[str] = [], auto_filename: str = None):
+def get_logger(spec: list = [], auto_filename: str = None):
     [key, filename,*_] = spec + [None] * 2
     key = "trace-file" if key == "trace" and filename else key
     logger = outputs[key] if key in outputs else base_output
