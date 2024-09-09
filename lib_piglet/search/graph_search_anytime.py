@@ -29,7 +29,8 @@ class graph_search_anytime(base_search):
         self.start_ = start_state
         self.goal_ = goal_state
         self.start_time = time.process_time()
-        start_node = self.log("source", self.generate(start_state, None, None))
+        start_node = self.generate(start_state, None, None)
+        self.log("source", start_node)
         self.log("destination", self.generate(goal_state, None, None))
         self.open_list_.push(start_node)
         self.all_nodes_list_[start_node] = start_node
@@ -40,7 +41,8 @@ class graph_search_anytime(base_search):
 
         # continue while there are still nodes on OPEN
         while len(self.open_list_) > 0:
-            current = self.log("close", self.open_list_.pop())
+            current = self.open_list_.pop()
+            self.log("close", current)
             current.priority_queue_handle_ = None
             current.close()
             self.nodes_expanded_ += 1
@@ -71,7 +73,8 @@ class graph_search_anytime(base_search):
                 # each successor is a (state, action) tuple which
                 # which we map to a corresponding search_node and push
                 # then push onto the OPEN list
-                succ_node = self.log("generate", self.generate(state, action, current))
+                succ_node = self.generate(state, action, current)
+                self.log("generate", succ_node)
 
                 if succ_node.g_ + succ_node.h_ > self.UB:
                     # Prune the node if unweighted f is larger than upper bound.
@@ -129,11 +132,7 @@ class graph_search_anytime(base_search):
             self.nodes_expanded_,
             self.nodes_generated_,
             self.re_expansions_,
-            (
-                None
-                if self.first_solution_time_ == None
-                else round(self.first_solution_time_, 4)
-            ),
+            (None if self.first_solution_time_ == None else round(self.first_solution_time_, 4)),
             round(self.runtime_, 4),
             self.start_,
             self.goal_,

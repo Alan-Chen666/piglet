@@ -19,14 +19,8 @@ class base_search:
             self.listener_.log(event, current, **kwargs)
         return current
 
-    def __init__(
-        self,
-        open_list,
-        expander: base_expander,
-        heuristic_function=None,
-        time_limit: int = sys.maxsize,
-        listener: event_listener | None = None,
-    ):
+    def __init__(self, open_list, expander: base_expander, heuristic_function=None,
+                time_limit: int = sys.maxsize, listener: event_listener = None):
         self.listener_ = listener
 
         self.open_list_: list[search_node] = open_list
@@ -80,9 +74,7 @@ class base_search:
             result.h_ = 0
             result.f_ = result.g_
         else:
-            result.h_ = self.heuristic_function_(
-                self.expander_.domain_, result.state_, self.goal_
-            )
+            result.h_ = self.heuristic_function_(self.expander_.domain_, result.state_, self.goal_)
             result.f_ = result.g_ + result.h_ * self.heuristic_weight_
         return result
 

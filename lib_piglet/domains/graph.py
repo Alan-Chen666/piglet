@@ -29,11 +29,7 @@ class vertex:
         return str(self.id) + ": " + str(self.coordinate)
 
     def print_connections(self):
-        print(
-            str(self.id)
-            + " adjacent: "
-            + str([(x.id, cost) for x, cost in self.get_connections()])
-        )
+        print(str(self.id) + " adjacent: " + str([(x.id, cost) for x, cost in self.get_connections()]))
 
     def add_neighbor(self, neighbor, weight=0):
         self.adjacent[neighbor] = weight
@@ -74,7 +70,6 @@ class graph(base_domain[vertex]):
         self.num_vertices = 0
         if filename is not None:
             self.load(filename)
-
     def is_goal(self, current_state, goal_state):
         return current_state == goal_state
 
@@ -89,9 +84,7 @@ class graph(base_domain[vertex]):
 
         for line in f:
             content = line.strip().split()
-            if len(content) == 0 or (
-                content[0].strip() != "a" and content[0].strip() != "v"
-            ):
+            if len(content) == 0 or (content[0].strip() != "a" and content[0].strip() != "v"):
                 continue
 
             if len(content) != 4:
@@ -104,9 +97,7 @@ class graph(base_domain[vertex]):
                     x = int(content[2])
                     y = int(content[3])
                 except:
-                    eprint(
-                        "err; can not convert elements of {} to integer ".format(line)
-                    )
+                    eprint("err; can not convert elements of {} to integer ".format(line))
                     exit(1)
                 if id in self.vert_dict:
                     v: vertex = self.get_vertex(id)
@@ -120,9 +111,7 @@ class graph(base_domain[vertex]):
                     n2 = int(content[2])
                     cost = int(content[3])
                 except:
-                    eprint(
-                        "err; can not convert elements of {} to integer ".format(line)
-                    )
+                    eprint("err; can not convert elements of {} to integer ".format(line))
                     exit(1)
 
                 self.add_edge(n1, n2, cost)

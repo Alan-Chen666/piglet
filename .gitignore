@@ -143,5 +143,5 @@ cython_debug/
 .history
 .vscode
 
-# Searh traces
+# Search traces
 **/*.trace.yaml

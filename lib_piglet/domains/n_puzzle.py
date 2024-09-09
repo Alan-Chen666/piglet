@@ -37,9 +37,7 @@ class puzzle_state:
                 str_ += "\t"
         print(str_)
 
-    def __init__(
-        self, alist: list, x_index: int, from_action: int = Puzzle_Actions.START
-    ):
+    def __init__(self, alist: list, x_index: int, from_action: int = Puzzle_Actions.START):
         self.state_list_: list = alist
         self.from_action_: int = from_action
         self.x_index_: int = x_index
@@ -81,9 +79,7 @@ class n_puzzle(base_domain[puzzle_state]):
     def set_start(self, alist: list):
         puzzle_list = []
         if len(alist) != self.size_:
-            print(
-                "err; The length of puzzle not equal to puzzle width^2", file=sys.stderr
-            )
+            print("err; The length of puzzle not equal to puzzle width^2", file=sys.stderr)
             exit(1)
         for item in alist:
             if type(item) == str:
@@ -95,24 +91,16 @@ class n_puzzle(base_domain[puzzle_state]):
                 try:
                     num = int(item)
                 except:
-                    print(
-                        "err; unknown element type for: {item}".format(item),
-                        file=sys.stderr,
-                    )
+                    print("err; unknown element type for: {item}".format(item), file=sys.stderr)
                     exit(1)
             if num == 0:
                 num = "x"
             if num != "x" and (num <= 0 or num >= self.size_):
-                print(
-                    "err; Number {} not in range 1~{}".format(num, self.size_ - 1),
-                    file=sys.stderr,
-                )
+                print("err; Number {} not in range 1~{}".format(num, self.size_ - 1), file=sys.stderr)
                 exit(1)
 
             if num in puzzle_list:
-                print(
-                    "You can't have two {} in one puzzle".format(num), file=sys.stderr
-                )
+                print("You can't have two {} in one puzzle".format(num), file=sys.stderr)
                 exit(1)
             puzzle_list.append(num)
 
@@ -146,16 +134,12 @@ class n_puzzle(base_domain[puzzle_state]):
         for i in range(0, self.width_):
             line = file.readline().strip().strip(",").split(",")
             if len(line) != self.width_:
-                raise Exception(
-                    "The width of puzzle line {} not equal to puzzle width".format(i)
-                )
+                raise Exception("The width of puzzle line {} not equal to puzzle width".format(i))
             for char in line:
                 if char.isnumeric():
                     num = int(char)
                     if num < 0 or num >= self.size_:
-                        raise Exception(
-                            "Number {} not in range 1~{}".format(num, self.size_ - 1)
-                        )
+                        raise Exception("Number {} not in range 1~{}".format(num, self.size_ - 1))
                 else:
                     num = "x"
 
@@ -175,9 +159,6 @@ class n_puzzle(base_domain[puzzle_state]):
             for j in range(i + 1, self.size_):
                 if self.start_state().state_list_[j] == "x":
                     continue
-                if (
-                    self.start_state().state_list_[i]
-                    > self.start_state().state_list_[j]
-                ):
+                if (self.start_state().state_list_[i] > self.start_state().state_list_[j]):
                     count += 1
         return count

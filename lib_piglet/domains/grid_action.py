@@ -8,7 +8,6 @@
 import sys
 from enum import IntEnum
 
-
 class Move_Actions(IntEnum):
     MOVE_UP = 0
     MOVE_LEFT = 1
@@ -19,7 +18,6 @@ class Move_Actions(IntEnum):
     MOVE_UP_RIGHT = 6
     MOVE_DOWN_RIGHT = 7
     MOVE_DOWN_LEFT = 8
-
 
 class grid_action:
 

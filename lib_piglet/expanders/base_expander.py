@@ -6,13 +6,11 @@
 #
 
 
-from lib_piglet.domains.base_domain import base_domain
-
-
 class base_expander:
 
+
     def __init__(self, domain):
-        self.domain_: base_domain = domain
+        self.domain_: object = domain
 
     # identify successors of the current node
     #

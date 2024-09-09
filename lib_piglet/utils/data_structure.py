@@ -25,7 +25,6 @@ class queue(deque):
     def push(self, item):
         self.appendleft(item)
 
-
 class heap_item:
 
     def __init__(self, item, handle_id):
@@ -54,12 +53,13 @@ class bin_heap:
         :param compare_function: A function that return true if give two search_nodes as arguments and node1 >= node2.
         """
 
-        self.heapList: list = [0]
-        self.currentSize: int = 0
+        self.heapList: list  = [0]
+        self.currentSize: int  = 0
         self.compare_function: Callable = compare_function
 
         self.current_id: int = 0
-        self.handle: dict = {}
+        self.handle: dict ={}
+
 
     def insert(self, item):
         """
@@ -68,7 +68,7 @@ class bin_heap:
         :return handle_id: The handle of insert item.
         """
         id = self.current_id
-        self.heapList.append(heap_item(item, id))
+        self.heapList.append(heap_item(item,id))
         self.currentSize = self.currentSize + 1
         self.handle[id] = self.currentSize
         self.current_id += 1
@@ -86,7 +86,7 @@ class bin_heap:
     def pop(self):
         """
         Pop the top item of the heap and update the heap to maintain heap strucure.
-        :return item
+        :return:
         """
         retval: heap_item = self.heapList[1]
         self.handle.pop(retval.handle_id_)
@@ -97,16 +97,7 @@ class bin_heap:
         self.__percDown(1)
         return retval.item_
 
-    def top(self):
-        """
-        Return the top item of the heap. The item will not be deleted from the heap.
-        :return item
-        """
-        if self.size() == 0:
-            return None
-        return self.heapList[1].item_
-
-    def build(self, alist: list):
+    def build(self, alist:list):
         """
         Use a list to initialize the heap.
         :param alist:
@@ -117,16 +108,16 @@ class bin_heap:
         self.current_id = 0
         self.handle.clear()
         i = len(alist) // 2
-        self.heapList = [0] + [heap_item(x, 0) for x in alist]
+        self.heapList = [0] + [heap_item(x,0) for x in alist]
         self.currentSize = len(alist)
-        for i in range(1, self.currentSize + 1):
+        for i in range(1,self.currentSize+1):
             self.handle[self.current_id] = self.heapList[i]
             self.heapList[i].handle_id_ = self.current_id
             self.current_id += 1
-        while i > 0:
+        while (i > 0):
             self.__percDown(i)
             i = i - 1
-        return list(range(0, self.currentSize + 1))
+        return list(range(0,self.currentSize+1))
 
     def clear(self):
         """
@@ -151,7 +142,7 @@ class bin_heap:
         self.__percDown(index)
         return retval.item_
 
-    def increase(self, handle_id: int):
+    def increase(self,handle_id: int):
         """
         Update the item, if the target's value increased.
         :param handle_id:
@@ -162,7 +153,7 @@ class bin_heap:
         else:
             raise ValueError("Given item not in the heap")
 
-    def decrease(self, handle_id: int):
+    def decrease(self,handle_id: int):
         """
         Update the item, if the target's value decreased.
         :param handle_id:
@@ -173,30 +164,11 @@ class bin_heap:
         else:
             raise ValueError("Given item not in the heap")
 
-    def auto_update(self, handle_id: int):
-        if handle_id in self.handle:
-            i = self.handle[handle_id]
-            if i > 1 and not self.compare_function(
-                self.heapList[i].item_, self.heapList[i // 2].item_
-            ):
-                self.__percUp(i)
-            else:
-                self.__percDown(i)
-        else:
-            raise ValueError("Given item not in the heap")
-
     def update(self):
         i = self.currentSize // 2
-        while i > 0:
+        while (i > 0):
             self.__percDown(i)
             i = i - 1
-
-    def get(self, handle_id: int):
-        if not handle_id in self.handle:
-            raise KeyError("Handle id does not exist")
-        index = self.handle[handle_id]
-        retval: heap_item = self.heapList[index]
-        return retval.item_
 
     def size(self):
         """
@@ -215,13 +187,11 @@ class bin_heap:
     def __percUp(self, i):
         while i // 2 > 0:
             # print(i // 2, i, len(self.heapList),i in self.handle)
-            if not self.compare_function(
-                self.heapList[i].item_, self.heapList[i // 2].item_
-            ):
+            if not self.compare_function(self.heapList[i].item_,self.heapList[i // 2].item_):
                 tmp = self.heapList[i // 2]
                 self.heapList[i // 2] = self.heapList[i]
                 self.heapList[i] = tmp
-                self.handle[self.heapList[i // 2].handle_id_] = i // 2
+                self.handle[self.heapList[i // 2].handle_id_] = i//2
                 self.handle[self.heapList[i].handle_id_] = i
             i = i // 2
 
@@ -240,12 +210,11 @@ class bin_heap:
         if i * 2 + 1 > self.currentSize:
             return i * 2
         else:
-            if not self.compare_function(
-                self.heapList[i * 2].item_, self.heapList[i * 2 + 1].item_
-            ):
+            if not self.compare_function(self.heapList[i * 2].item_, self.heapList[i * 2 + 1].item_):
                 return i * 2
             else:
                 return i * 2 + 1
 
     def __len__(self):
         return self.size()
+

@@ -37,11 +37,7 @@ class grid_joint_state:
             a = other.agent_locations_
             b = self.agent_locations_
 
-        if (
-            not self.is_goal_
-            and not other.is_goal_
-            and len(self.agent_locations_) != len(self.agent_locations_)
-        ):
+        if not self.is_goal_ and not other.is_goal_ and len(self.agent_locations_) != len(self.agent_locations_):
             return False
 
         for key, item in a.items():
@@ -65,7 +61,7 @@ class grid_joint_state:
         return {"agents": self.agent_locations_}
 
 
-grid_state = tuple[int, int]
+grid_state = tuple
 
 
 class gridmap(base_domain[grid_state]):
@@ -157,7 +153,6 @@ class gridmap(base_domain[grid_state]):
 
     def __str__(self):
         return self.domain_file_
-
 
 class gridmap_joint(gridmap):
     start_: grid_joint_state

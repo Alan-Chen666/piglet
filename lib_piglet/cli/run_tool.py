@@ -24,7 +24,7 @@ from lib_piglet.search import (
 )
 from lib_piglet.logging.search_logger import bind, search_logger
 from lib_piglet.utils.data_structure import queue, stack, bin_heap
-from lib_piglet.utils.focal_priority_queue import focal_priority_queue
+# from lib_piglet.utils.focal_priority_queue import focal_priority_queue
 from lib_piglet.heuristics import gridmap_h, n_puzzle_h, graph_h, pddl_h
 
 import sys
@@ -43,11 +43,7 @@ def run_task(t: task, args: args_interface, logger: search_logger):
     same_problem = False
 
     # if search engine exist and domain file doesn't change, just update start and goal
-    if (
-        search_engine is not None
-        and domain.domain_file_ is not None
-        and t.domain == domain.domain_file_
-    ):
+    if search_engine is not None and domain.domain_file_ is not None and t.domain == domain.domain_file_:
         if t.domain_type == DOMAIN_TYPE.gridmap:
             start = t.start_state
             goal = t.goal_state
@@ -105,9 +101,7 @@ def run_task(t: task, args: args_interface, logger: search_logger):
             open_list = bin_heap(search_node.compare_node_g)
         elif strategy == "a-star":
             if args.focal > 1:
-                open_list = focal_priority_queue(
-                    compare_function_1=search_node.compare_node_f, weight=args.focal
-                )
+                open_list = focal_priority_queue(compare_function_1=search_node.compare_node_f, weight=args.focal)
             else:
                 open_list = bin_heap(search_node.compare_node_f)
             heuristic_function = heuristic
@@ -126,36 +120,22 @@ def run_task(t: task, args: args_interface, logger: search_logger):
         elif args.framework == "iterative":
             engine = iterative_deepening.iterative_deepening
             open_list = stack()
-        search_engine = engine(
-            open_list,
-            expander,
-            heuristic_function=heuristic_function,
-            time_limit=args.time_limit,
-        )
+        search_engine = engine(open_list, expander, heuristic_function=heuristic_function, time_limit=args.time_limit)
 
     search_engine.heuristic_weight_ = args.heuristic_weight
     bind(search_engine, logger).head()
     if args.framework == "iterative":
         if args.strategy == "depth" and args.id_threshold_type == "depth":
-            search_engine.get_path(
-                start, goal, threshold_type=iterative_deepening.ID_threshold.depth
-            )
+            search_engine.get_path(start, goal, threshold_type=iterative_deepening.ID_threshold.depth)
         elif args.strategy == "depth" or args.id_threshold_type == "cost":
-            search_engine.get_path(
-                start, goal, threshold_type=iterative_deepening.ID_threshold.depth
-            )
+            search_engine.get_path(start, goal, threshold_type=iterative_deepening.ID_threshold.depth)
         elif args.strategy == "a-star":
-            search_engine.get_path(
-                start, goal, threshold_type=iterative_deepening.ID_threshold.cost
-            )
+            search_engine.get_path(start, goal, threshold_type=iterative_deepening.ID_threshold.cost)
     elif args.framework == "tree":
-        search_engine.get_path(
-            start, goal, depth_limit=args.depth_limit, cost_limit=args.cost_limit
-        )
+        search_engine.get_path(start, goal, depth_limit=args.depth_limit, cost_limit=args.cost_limit)
     else:
         search_engine.get_path(start, goal)
     return search_engine
-
 
 # run task with cli arguments
 # @param t A task object describe the task domain, start and goal
@@ -179,12 +159,7 @@ def run_multi_tasks(domain_type, tasks: list, args: args_interface):
             domain.start_ = start
             domain.goal_ = goal
         else:
-            print(
-                "err; Given domain does not support multi-agent search {}".format(
-                    args.problem
-                ),
-                file=sys.stderr,
-            )
+            print("err; Given domain does not support multi-agent search {}".format(args.problem), file=sys.stderr)
 
     # if no search engine or domain file change, reload domain.
     else:
@@ -203,12 +178,7 @@ def run_multi_tasks(domain_type, tasks: list, args: args_interface):
             expander = grid_expander.grid_joint_expander(domain)
             heuristic = gridmap_h.piglet_multi_agent_heuristic
         else:
-            print(
-                "err; Given domain does not support multi-agent search {}".format(
-                    args.problem
-                ),
-                file=sys.stderr,
-            )
+            print("err; Given domain does not support multi-agent search {}".format(args.problem), file=sys.stderr)
 
         # prepare open list and heuristic_function for different strategy
         heuristic_function = None
@@ -235,32 +205,19 @@ def run_multi_tasks(domain_type, tasks: list, args: args_interface):
         elif args.framework == "iterative":
             engine = iterative_deepening.iterative_deepening
             open_list = stack()
-        search_engine = engine(
-            open_list,
-            expander,
-            heuristic_function=heuristic_function,
-            time_limit=args.time_limit,
-        )
+        search_engine = engine(open_list, expander, heuristic_function=heuristic_function, time_limit=args.time_limit)
 
     search_engine.heuristic_weight_ = args.heuristic_weight
 
     if args.framework == "iterative":
         if args.strategy == "depth" and args.id_threshold_type == "depth":
-            search_engine.get_path(
-                start, goal, threshold_type=iterative_deepening.ID_threshold.depth
-            )
+            search_engine.get_path(start, goal, threshold_type=iterative_deepening.ID_threshold.depth)
         elif args.strategy == "depth" and args.id_threshold_type == "cost":
-            search_engine.get_path(
-                start, goal, threshold_type=iterative_deepening.ID_threshold.depth
-            )
+            search_engine.get_path(start, goal, threshold_type=iterative_deepening.ID_threshold.depth)
         elif args.strategy == "a-star":
-            search_engine.get_path(
-                start, goal, threshold_type=iterative_deepening.ID_threshold.cost
-            )
+            search_engine.get_path(start, goal, threshold_type=iterative_deepening.ID_threshold.cost)
     elif args.framework == "tree":
-        search_engine.get_path(
-            start, goal, depth_limit=args.depth_limit, cost_limit=args.cost_limit
-        )
+        search_engine.get_path(start, goal, depth_limit=args.depth_limit, cost_limit=args.cost_limit)
     else:
         search_engine.get_path(start, goal)
     return search_engine

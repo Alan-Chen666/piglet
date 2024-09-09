@@ -1,4 +1,4 @@
-![image](https://github.com/ShortestPathLab/piglet/assets/15244945/d708cd6a-60f3-4fc9-88c2-af90bcb8cac9)
+![banner](banner.png)
 
 # Piglet
 
@@ -6,7 +6,8 @@ Piglet is a library of search algorithms that you can not only readily use, but 
 
 ## Requirements
 
-python >= 3.11
+python >= 3.8
+
 pyyaml == 6.0.2
 
 ## Install
@@ -29,7 +30,7 @@ $ piglet.py --help
 run a scenario:
 
 ```
-$ python3 piglet.py -p ./example/example_n_puzzle_scenario.scen -f graph -s uniform
+$ python piglet.py -p ./example/example_n_puzzle_scenario.scen -f graph -s uniform
 ```
 
 ### Generating search traces
@@ -37,7 +38,7 @@ $ python3 piglet.py -p ./example/example_n_puzzle_scenario.scen -f graph -s unif
 Use search traces to analyse and debug algorithms in [Posthoc](https://posthoc.pathfinding.ai). Add the `--log trace` argument to make Piglet output search traces.
 
 ```bash
-python3 piglet.py -p ./example/arena2.min.scen -f graph -s a-star --log trace
+python piglet.py -p ./example/arena2.min.scen -f graph -s a-star --log trace
 ```
 
 ### Piglet Library

@@ -6,9 +6,6 @@
 #
 
 # Store solution of a search. paths_ attribute include a list of search_node.
-from lib_piglet.search.search_node import search_node
-
-
 class solution:
 
     # Get solution statistic
@@ -16,10 +13,10 @@ class solution:
     def get_solution_info(self):
         return [self.cost_, self.depth_]
 
-    def __init__(self, path: list[search_node], depth: int, cost: int):
-        self.cost_ = cost
-        self.depth_ = depth
-        self.paths_ = path
+    def __init__(self, path: list, depth: int, cost: int):
+        self.cost_: int = cost
+        self.depth_: int = depth
+        self.paths_: list = path
 
     def __str__(self):
         return "{}".format(self.paths_)
@@ -27,10 +24,10 @@ class solution:
     def __repr__(self):
         return self.__str__()
 
-
 # Convert solution to a list of state
 def solution_to_state_list(sol: solution):
-    path = sol.paths_[:]
-    for i in range(0, len(path)):
+    path = solution.paths_[:]
+    for i in range(0,len(path)):
         path = path[i].state_
     return path
+

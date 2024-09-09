@@ -20,19 +20,9 @@ class ID_threshold(IntEnum):
 
 class iterative_deepening(base_search):
 
-    def __init__(
-        self,
-        open_list,
-        expander: base_expander,
-        heuristic_function=None,
-        time_limit: int = sys.maxsize,
-    ):
-        super(iterative_deepening, self).__init__(
-            open_list, expander, heuristic_function, time_limit
-        )
-        self.tree_search_engine: tree_search = tree_search(
-            open_list, expander, heuristic_function, time_limit
-        )
+    def __init__(self, open_list, expander: base_expander, heuristic_function=None, time_limit: int = sys.maxsize):
+        super(iterative_deepening, self).__init__(open_list, expander, heuristic_function, time_limit)
+        self.tree_search_engine: tree_search = tree_search(open_list, expander, heuristic_function, time_limit)
 
     # Search the path between two state
     # @param start_state The start of the path
@@ -56,13 +46,9 @@ class iterative_deepening(base_search):
 
             # Choose which value to limit based on search strategy
             if threshold_type == ID_threshold.cost:
-                solution = self.tree_search_engine.get_path(
-                    self.start_, self.goal_, cost_limit=cost_threshold
-                )
+                solution = self.tree_search_engine.get_path(self.start_, self.goal_, cost_limit=cost_threshold)
             elif threshold_type == ID_threshold.depth:
-                solution = self.tree_search_engine.get_path(
-                    self.start_, self.goal_, depth_limit=depth_threshold
-                )
+                solution = self.tree_search_engine.get_path(self.start_, self.goal_, depth_limit=depth_threshold)
             next_depth = solution[1]
             next_cost = solution[2]
 
@@ -72,11 +58,8 @@ class iterative_deepening(base_search):
             self.runtime_ = time.process_time() - self.start_time
 
             if solution[0] is None:
-                if (
-                    threshold_type == ID_threshold.cost and next_cost == sys.maxsize
-                ) or (
-                    threshold_type == ID_threshold.depth and next_depth == sys.maxsize
-                ):
+                if (threshold_type == ID_threshold.cost and next_cost == sys.maxsize) \
+                        or (threshold_type == ID_threshold.depth and next_depth == sys.maxsize):
                     self.solution_ = None
                     self.status_ = "Failed"
                     return None

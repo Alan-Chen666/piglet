@@ -13,7 +13,8 @@ from lib_piglet.utils.tools import eprint
 
 # Describe parameters in arg parser result. For IDE convenient.
 class args_interface:
-    log: str
+    log: list[str]
+    solution: bool
     problem: str
     framework: str
     strategy: str
@@ -25,6 +26,7 @@ class args_interface:
     heuristic_weight: float
     multi_agent: bool
     problem_number: int
+    problem_index: int
     anytime: bool
     id_threshold_type: int
     focal: bool
@@ -54,9 +56,7 @@ domain_types = ["grid4", "n-puzzle", "graph", "pddl"]
 id_choices = ["depth", "cost"]
 
 statistic_template = "{0:10}| {1:10}| {2:10}| {3:10}| {4:10}| {5:10}| {6:10}| {7:10}| {8:10}| {9:10}| {10:20}| {11:20}"
-csv_template = (
-    '"{0}","{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}","{9}","{10}","{11}"\n'
-)
+csv_template = ('"{0}","{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}","{9}","{10}","{11}"\n')
 
 anytime_statistic_template = "{0:10}| {1:10}| {2:10}| {3:10}| {4:10}| {5:10}| {6:10}| {7:10}| {8:10}| {9:10}| {10:10}| {11:10}| {12:20}| {13:20}"
 anytime_csv_template = '"{0}","{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}","{9}","{10}","{11}","{12}","{13}"\n'
@@ -112,7 +112,7 @@ def csv_header(anytime):
 
 # statistic to string
 # @return str A string of statistic information
-def statistic_string(args, search, anytime, logger: base_output | None = None):
+def statistic_string(args, search, anytime, logger: base_output = None):
     template, header = (
         (statistic_template, statistic_header)
         if anytime
@@ -182,25 +182,6 @@ def parse_args():
     )
 
     parser.add_argument(
-        "-l",
-        "--log",
-        type=str,
-        default=None,
-        help=f"Specify a logging framework. Supported frameworks are [{', '.join(outputs.keys())}]",
-        choices=outputs.keys(),
-        metavar="trace",
-    )
-
-    parser.add_argument(
-        "-lf",
-        "--log-filename",
-        type=str,
-        default=None,
-        help=f"For '--log trace-file', specify an output filename. If not specified, a default filename will be used.",
-        metavar="output.trace.yaml",
-    )
-
-    parser.add_argument(
         "-f",
         "--framework",
         type=str,
@@ -263,21 +244,12 @@ def parse_args():
         "-l",
         "--log",
         type=str,
-        default=None,
-        help=f"Specify a logging framework. Supported frameworks are [{', '.join(outputs.keys())}].",
-        choices=outputs.keys(),
-        metavar="trace",
-    )
-
-    parser.add_argument(
-        "-lf",
-        "--log-filename",
-        type=str,
-        default=None,
-        help=f"For '--log trace-file', specify an output filename. If not specified, a default filename will be used.",
-        metavar="output.trace.yaml",
-    )
-
+        default='print',
+        help=f"Specify a logging framework. Supported frameworks are [{', '.join(outputs.keys())}]. To output to a file, append a filename and choose the 'trace' logging framework.",
+        metavar=("trace", "filename.trace.yaml"),
+        nargs="*",
+    )    
+    
     parser.add_argument(
         "-i",
         "--id-threshold-type",
@@ -289,15 +261,6 @@ def parse_args():
             ", ".join(strategy_choice)
         ),
         metavar="depth",
-    )
-
-    parser.add_argument(
-        "-t",
-        "--time-limit",
-        type=float,
-        default=30,
-        help="Specify the time-limit for the search. (seconds) The default setting is 30 second.",
-        metavar=30,
     )
 
     parser.add_argument(
@@ -322,13 +285,6 @@ def parse_args():
         metavar=1.0,
     )
 
-    parser.add_argument(
-        "-o", "--output-file", type=str, default=None, help="Output results to a file"
-    )
-
-    parser.add_argument(
-        "--solution", default=False, action="store_true", help="Print/write solution"
-    )
 
     parser.add_argument(
         "-m",
@@ -353,62 +309,29 @@ def parse_args():
         help="Search with focal search mode when having graph as framework and a-star as strategy",
     )
 
-    parser.add_argument(
-        "-x",
-        "--problem-index",
-        type=int,
-        default=0,
-        help="Solve problems starting from index x",
-        metavar=0,
-    )
-    parser.add_argument(
-        "-n",
-        "--problem-number",
-        type=int,
-        default=sys.maxsize,
-        help="Solve only top n problems from the scenario file, offset by '--problem-index'",
-        metavar=1000,
-    )
-
     args, unknown = parser.parse_known_args()
     args: args_interface = args
     if args.framework == "iterative":
         if args.strategy != "depth":
-            print(
-                "err; With iterative-deepening search, the strategy can only be depth ",
-                file=sys.stderr,
-            )
+            print("err; With iterative-deepening search, the strategy can only be depth ", file=sys.stderr)
             exit(1)
     if args.focal > 1:
         if args.heuristic_weight > 1:
-            print(
-                "err; With focal search, the heuristic weight can only be 1 ",
-                file=sys.stderr,
-            )
+            print("err; With focal search, the heuristic weight can only be 1 ", file=sys.stderr)
             exit(1)
         if args.strategy != "a-star":
-            print(
-                "err; With focal search, the strategy should be a-start ",
-                file=sys.stderr,
-            )
+            print("err; With focal search, the strategy should be a-start ", file=sys.stderr)
             exit(1)
 
     if args.anytime and args.strategy != "a-star":
-        print(
-            "err; anytime search only works with graph framework and a-start strategy",
-            file=sys.stderr,
-        )
+        print( "err; anytime search only works with graph framework and a-start strategy", file=sys.stderr)
         exit(1)
 
-    if (
-        args.depth_limit != sys.maxsize or args.cost_limit != sys.maxsize
-    ) and args.framework != "tree":
+    if (args.depth_limit != sys.maxsize or args.cost_limit != sys.maxsize) and args.framework != "tree":
         eprint("warning; depth limit or cost limit only works with tree search")
 
     if args.heuristic_weight != 1.0 and args.strategy != "a-star":
-        eprint(
-            "warning; heuristic weight only works with a-star strategy for suboptimal a-star"
-        )
+        eprint("warning; heuristic weight only works with a-star strategy for suboptimal a-star")
 
     return args
 
@@ -423,72 +346,47 @@ def parse_problem(problem: list, domain_type: int):
         try:
             ta.domain = int(problem[0])
         except:
-            print(
-                "err; Cannot convert {} to puzzle width".format(problem[0]),
-                file=sys.stderr,
-            )
+            print("err; Cannot convert {} to puzzle width".format(problem[0]), file=sys.stderr)
             exit(1)
         ta.start_state = problem[1].split(",")
     elif domain_type == DOMAIN_TYPE.gridmap:
         ta.domain = problem[1]
         if len(problem) < 9:
-            print(
-                "err; the length of an entry of grid problem should be 9. Check the sample grid scenario format",
-                file=sys.stderr,
-            )
+            print("err; the length of an entry of grid problem should be 9. Check the sample grid scenario format", file=sys.stderr)
             exit(1)
         try:
             ta.start_state = (int(problem[5]), int(problem[4]))
             ta.goal_state = (int(problem[7]), int(problem[6]))
         except:
-            print(
-                "err; Cannot convert {} {} {} {} to coordinates".format(*problem[4:8]),
-                file=sys.stderr,
-            )
+            print("err; Cannot convert {} {} {} {} to coordinates".format(*problem[4:8]), file=sys.stderr)
             exit(1)
     elif domain_type == DOMAIN_TYPE.graph:
         ta.domain = problem[0]
         if len(problem) < 4:
-            print(
-                "err; the length of an entry of graph problem should be 4. Check the sample graph scenario format",
-                file=sys.stderr,
-            )
+            print("err; the length of an entry of graph problem should be 4. Check the sample graph scenario format", file=sys.stderr)
             exit(1)
         try:
             ta.start_state = int(problem[1])
             ta.goal_state = int(problem[2])
         except:
-            print(
-                "err; Cannot convert {} {} to coordinates".format(*problem[1:3]),
-                file=sys.stderr,
-            )
+            print("err; Cannot convert {} {} to coordinates".format(*problem[1:3]), file=sys.stderr)
             exit(1)
     elif domain_type == DOMAIN_TYPE.pddl:
         ta.domain = problem[0]
         ta.problem = problem[1]
 
         if len(problem) != 2:
-            print(
-                "err; the length of an entry of pddl problem should be 2. Check the sample pddl scenario format",
-                file=sys.stderr,
-            )
+            print("err; the length of an entry of pddl problem should be 2. Check the sample pddl scenario format", file=sys.stderr)
             exit(1)
     else:
         print("err; Unknown domain type", file=sys.stderr)
         exit(1)
     return ta
 
-
 def parse_scen_header(content):
     if len(content) != 2 or content[0] != "domain" or content[1] not in domain_types:
-        print(
-            "err; The first line of input source must be domain type. eg. domain octile",
-            file=sys.stderr,
-        )
-        print(
-            "Supported domains are: [{}]".format(",".join(domain_types)),
-            file=sys.stderr,
-        )
+        print("err; The first line of input source must be domain type. eg. domain octile", file=sys.stderr)
+        print("Supported domains are: [{}]".format(",".join(domain_types)), file=sys.stderr)
         exit(1)
     if content[1] == "n-puzzle":
         domain_type = DOMAIN_TYPE.n_puzzle
