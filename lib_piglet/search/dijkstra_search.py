@@ -21,22 +21,22 @@ class dijkstra_search(base_search):
     # get distance from all state to target_state
     # @param target_state Then target_state of the search
     # @return a dictionary contains each state and distance from this state to target state
-    def get_path(self,target_state):
+    def get_path(self, target_state):
         self.open_list_.clear()
         self.all_nodes_list_.clear()
         self.reset_statistic()
         self.max_depth_ = 0
         self.goal_ = target_state
         self.start_time = time.process_time()
-        start_node = self.generate(target_state, None, None)
+        start_node = self.log("source", self.generate(start_node, None, None))
         self.open_list_.push(start_node)
         self.all_nodes_list_[start_node] = start_node
 
         # continue while there are still nods on OPEN
-        while (len(self.open_list_) > 0):
-            current: search_node = self.open_list_.pop()
+        while len(self.open_list_) > 0:
+            current = self.log("close", self.open_list_.pop())
             current.close()
-            self.nodes_expanded_ +=1
+            self.nodes_expanded_ += 1
             if current.depth_ > self.max_depth_:
                 self.max_depth_ = current.depth_
             # If have time_limit, break time out search.
@@ -46,21 +46,22 @@ class dijkstra_search(base_search):
                     self.status_ = "Time out"
                     return None
 
-            if self.nodes_expanded_%100000 == 0:
+            if self.nodes_expanded_ % 100000 == 0:
                 print(self.nodes_expanded_)
 
+            self.log("expand", current)
             # expand the current node
-            for succ in self.expander_.expand(current):
+            for state, action in self.expander_.expand(current):
                 # each successor is a (state, action) tuple which
                 # which we map to a corresponding search_node and push
                 # then push onto the OPEN list
-                succ_node = self.generate(succ[0], succ[1], current)
+                succ_node = self.log("expand", self.generate(state, action, current))
                 # succ_node not in any list, add it to open list
                 if succ_node not in self.all_nodes_list_:
                     # we need this open_handle_ to update the node in open list in the future
                     succ_node.priority_queue_handle_ = self.open_list_.push(succ_node)
                     self.all_nodes_list_[succ_node] = succ_node
-                    self.nodes_generated_+= 1
+                    self.nodes_generated_ += 1
 
                 # succ_node only have the same hash and state comparing with the on in the all nodes list
                 # It's not the one in the all nodes list,  we need the real node in the all nodes list.
@@ -70,12 +71,14 @@ class dijkstra_search(base_search):
 
         # OPEN list is exhausted, dijkstra finish
         self.solution_ = self.solution()
+        self.log("solution", self.all_nodes_list_[0])
         self.status_ = "Success"
         self.runtime_ = time.process_time() - self.start_time
         return self.solution_
 
-    def relax(self, exist:search_node, new:search_node):
+    def relax(self, exist: search_node, new: search_node):
         if exist.g_ > new.g_:
+            self.log("relax", new)
             exist.f_ = new.f_
             exist.g_ = new.g_
             exist.h_ = new.h_
@@ -91,4 +94,4 @@ class dijkstra_search(base_search):
         for node in self.all_nodes_list_:
             sol[node.state_] = node.g_
 
-        return solution(sol,self.max_depth_,self.nodes_expanded_)
+        return solution(sol, self.max_depth_, self.nodes_expanded_)
