@@ -126,7 +126,7 @@ class graph_search_anytime(base_search):
                 self.open_list_.decrease(exist.priority_queue_handle_)
             self.log('generate-update', exist)
         else:
-            self.log('generate-dominated', exist)
+            self.log('generate-dominated', new)
     # Get statistic information
     # @return list A list of Statistic information
     def get_statistic(self):
