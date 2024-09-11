@@ -9,14 +9,18 @@ from lib_piglet.expanders.base_expander import base_expander
 from lib_piglet.search.search_node import search_node
 from lib_piglet.search.event_listener import event_listener
 from lib_piglet.solution.solution import solution
-from typing import Callable
+from typing import Callable, Union
+
+from lib_piglet.utils.identifier import get_random_id
 
 
 class base_search:
 
+    name = 'untitled-search'
+
     def log(self, event: str, current: search_node, **kwargs):
         if self.listener_:
-            self.listener_.log(event, current, **kwargs)
+            self.listener_.log(self.name, event, current, **kwargs)
         return current
 
     def __init__(self, open_list, expander: base_expander, heuristic_function=None,
@@ -46,15 +50,15 @@ class base_search:
     # @param goal_state Then goal of the path
     # @return a list of locations between start and goal
     def get_path(self, start_state, goal_state):
-        raise NotImplementedError()
+        pass
 
     # Generate search_node objects for a given state
     # For this operation we we need to know:
     # @param state: the state which the search node maps to
     # @param action: the action which generated the state (could be [None])
     # @param parent: the parent state (could be [None])
-    def generate(self, state, action, parent: search_node):
-        result = search_node()
+    def generate(self, state, action, parent: Union[search_node, None]):
+        result = search_node(name=get_random_id())
         result.state_ = state
         result.action_ = action
         if parent == None:

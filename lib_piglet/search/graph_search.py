@@ -10,13 +10,16 @@
 # @author: mike
 # @created: 2020-07-16
 #
+from functools import lru_cache
 import sys, time
 from lib_piglet.search.base_search import base_search
 from lib_piglet.search.base_search import search_node
 
 
 class graph_search(base_search):
-
+    
+    name = 'graph'
+    
     # Search the path between two state
     # @param start_state The start of the path
     # @param goal_state Then goal of the path
@@ -37,8 +40,6 @@ class graph_search(base_search):
         # continue while there are still nods on OPEN
         while len(self.open_list_) > 0:
             current = self.open_list_.pop()
-            self.log("close", current)
-            current.close()
             self.nodes_expanded_ += 1
 
             # If have time_limit, break time out search.
@@ -56,26 +57,32 @@ class graph_search(base_search):
                 return self.solution_
 
             self.log("expand", current)
+            current.close()
+            
             # expand the current node
             for state, action in self.expander_.expand(current):
                 # each successor is a (state, action) tuple which
                 # which we map to a corresponding search_node and push
                 # then push onto the OPEN list
                 succ_node = self.generate(state, action, current)
-                self.log("generate", succ_node)
+                # self.log("generate", succ_node)
                 # succ_node not in any list, add it to open list
                 if succ_node not in self.all_nodes_list_:
-                    self.log("keep", succ_node)
+                    self.log("generate-new", succ_node)
                     # we need this open_handle_ to update the node in open list in the future
                     succ_node.priority_queue_handle_ = self.open_list_.push(succ_node)
                     self.all_nodes_list_[succ_node] = succ_node
                     self.nodes_generated_ += 1
-
-                # succ_node only have the same hash and state comparing with the on in the all nodes list
-                # It's not the one in the all nodes list,  we need the real node in the all nodes list.
-                exist = self.all_nodes_list_[succ_node]
-                if not exist.is_closed():
-                    self.relax(exist, succ_node)
+                else:      
+                    # succ_node only have the same hash and state comparing with the on in the all nodes list
+                    # It's not the one in the all nodes list,  we need the real node in the all nodes list.
+                    exist = self.all_nodes_list_[succ_node]
+                    if not exist.is_closed():
+                        self.relax(exist, succ_node)
+                    
+            # Optionally log close event
+            # self.log("close", current)
+        
         # OPEN list is exhausted and we did not find the goal
         # return failure instead of a solution
         self.runtime_ = time.process_time() - self.start_time
@@ -95,5 +102,7 @@ class graph_search(base_search):
             if exist.priority_queue_handle_ is not None:
                 # If handle exist, we are using bin_heap. We need to tell bin_heap one element's value
                 # is decreased. Bin_heap will update the heap to maintain priority structure.
-                self.log("relax", exist)
                 self.open_list_.decrease(exist.priority_queue_handle_)
+            self.log("generate-update", exist)
+        else:
+            self.log('generate-dominated', exist) 

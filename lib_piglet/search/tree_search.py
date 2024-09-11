@@ -16,6 +16,8 @@ from lib_piglet.search.search_node import search_node
 
 
 class tree_search(base_search):
+    
+    name = 'tree'
 
     # Search the path between two state
     # @param start_state The start of the path
@@ -61,6 +63,7 @@ class tree_search(base_search):
                 return self.solution_, min_next_d, min_next_f
 
             self.log("expand", current)
+            
             # expand the current node
             for state, action in self.expander_.expand(current):
                 # each successor is a (state, action) tuple which

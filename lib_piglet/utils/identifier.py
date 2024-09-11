@@ -1,5 +1,7 @@
 import base64
 import hashlib
+from random import random
+import time
 from yaml import dump
 
 
@@ -10,3 +12,7 @@ def encode(num: str):
 
 def identifier(obj: object):
     return encode(f"{id(obj)}")
+
+def get_random_id():
+    return encode(f"{random()}")
+

@@ -5,6 +5,7 @@
 # @created: 2020-07-16
 #
 
+from typing import Callable
 from lib_piglet.search.base_search import base_search
 from lib_piglet.search.tree_search import tree_search
 from lib_piglet.search.search_node import search_node
@@ -46,8 +47,10 @@ class iterative_deepening(base_search):
 
             # Choose which value to limit based on search strategy
             if threshold_type == ID_threshold.cost:
+                self.tree_search_engine.name = f'cost-{cost_threshold}'
                 solution = self.tree_search_engine.get_path(self.start_, self.goal_, cost_limit=cost_threshold)
             elif threshold_type == ID_threshold.depth:
+                self.tree_search_engine.name = f'depth-{depth_threshold}'
                 solution = self.tree_search_engine.get_path(self.start_, self.goal_, depth_limit=depth_threshold)
             next_depth = solution[1]
             next_cost = solution[2]

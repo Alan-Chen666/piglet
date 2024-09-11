@@ -17,6 +17,8 @@ from lib_piglet.solution.solution import solution
 
 
 class dijkstra_search(base_search):
+    
+    name = 'dijkstra'
 
     # get distance from all state to target_state
     # @param target_state Then target_state of the search
@@ -30,17 +32,18 @@ class dijkstra_search(base_search):
         self.start_time = time.process_time()
         start_node = self.generate(start_node, None, None)
         self.log("source", start_node)
+        self.log('destination', self.generate(self.goal_, None, None))
         self.open_list_.push(start_node)
         self.all_nodes_list_[start_node] = start_node
 
         # continue while there are still nods on OPEN
         while len(self.open_list_) > 0:
             current = self.open_list_.pop()
-            self.log("close", current)
-            current.close()
+            
             self.nodes_expanded_ += 1
-            if current.depth_ > self.max_depth_:
-                self.max_depth_ = current.depth_
+            
+            if self.open_list[-1].depth_ > self.max_depth_:
+                self.max_depth_ = self.open_list[-1].depth_
             # If have time_limit, break time out search.
             if self.time_limit_ < sys.maxsize:
                 self.runtime_ = time.process_time() - self.start_time
@@ -50,18 +53,20 @@ class dijkstra_search(base_search):
 
             if self.nodes_expanded_ % 100000 == 0:
                 print(self.nodes_expanded_)
-
+                
             self.log("expand", current)
+            current.close()
+
             # expand the current node
             for state, action in self.expander_.expand(current):
                 # each successor is a (state, action) tuple which
                 # which we map to a corresponding search_node and push
                 # then push onto the OPEN list
                 succ_node = self.generate(state, action, current)
-                self.log("expand", succ_node)
                 # succ_node not in any list, add it to open list
                 if succ_node not in self.all_nodes_list_:
                     # we need this open_handle_ to update the node in open list in the future
+                    self.log("generate-new", succ_node)
                     succ_node.priority_queue_handle_ = self.open_list_.push(succ_node)
                     self.all_nodes_list_[succ_node] = succ_node
                     self.nodes_generated_ += 1
@@ -71,6 +76,8 @@ class dijkstra_search(base_search):
                 exist = self.all_nodes_list_[succ_node]
                 if not exist.is_closed():
                     self.relax(exist, succ_node)
+            
+            # self.log("close", current)
 
         # OPEN list is exhausted, dijkstra finish
         self.solution_ = self.solution()
@@ -81,7 +88,6 @@ class dijkstra_search(base_search):
 
     def relax(self, exist: search_node, new: search_node):
         if exist.g_ > new.g_:
-            self.log("relax", new)
             exist.f_ = new.f_
             exist.g_ = new.g_
             exist.h_ = new.h_
@@ -90,6 +96,9 @@ class dijkstra_search(base_search):
                 # If handle exist, we are using bin_heap. We need to tell bin_heap one element's value
                 # is decreased. Bin_heap will update the heap to maintain priority structure.
                 self.open_list_.decrease(exist.priority_queue_handle_)
+            self.log("generate-update", new)
+        else:
+            self.log('generate-dominated', new)
 
     # extract the computed solution by following backpointers
     def solution(self):

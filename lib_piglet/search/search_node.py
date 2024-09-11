@@ -10,16 +10,19 @@ import sys, random
 from functools import total_ordering
 from typing import Generic, TypeVar
 
+from lib_piglet.utils.identifier import get_random_id, identifier
+
 State = TypeVar("State")
 
 
 class search_node(Generic[State]):
 
-    def __init__(self):
+    def __init__(self, name:str=None):
+        self.id = name or identifier(self)
         # some default values for uninitialised nodes
         self.action_: object = None
         self.state_: State = None
-        self.parent_: object = None
+        self.parent_: search_node[State] = None
         self.g_: float = 0
         self.depth_: int = 0
         self.instance_: int = 0

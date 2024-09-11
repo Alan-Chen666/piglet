@@ -6,19 +6,14 @@
 # # ──────────────────────────────────────────────────────────────────────────────
 
 from random import randint
-import time
 from lib_piglet.cli.cli_tool import *
 from lib_piglet.cli.run_tool import *
 import os
 
 from lib_piglet.logging.search_logger import search_logger
-from lib_piglet.utils.identifier import identifier
+from lib_piglet.utils.identifier import get_random_id
 from lib_piglet.output.outputs import outputs
 from lib_piglet.output.base_output import base_output
-
-
-def get_random_id():
-    return identifier(f"{round(time.time() * 1000) + randint(0, 10000)}")
 
 
 def get_logger(spec: list = [], auto_filename: str = None):

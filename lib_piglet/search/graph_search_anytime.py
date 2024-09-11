@@ -17,6 +17,8 @@ from lib_piglet.solution.solution import solution
 
 
 class graph_search_anytime(base_search):
+    
+    name = 'graph-anytime'
 
     # Search the path between two state
     # @param start_state The start of the path
@@ -42,9 +44,7 @@ class graph_search_anytime(base_search):
         # continue while there are still nodes on OPEN
         while len(self.open_list_) > 0:
             current = self.open_list_.pop()
-            self.log("close", current)
             current.priority_queue_handle_ = None
-            current.close()
             self.nodes_expanded_ += 1
 
             # If have time_limit, break time out search.
@@ -67,21 +67,25 @@ class graph_search_anytime(base_search):
                 if self.first_solution_time_ == None:
                     self.first_solution_time_ = time.process_time() - self.start_time
                 continue
+            
             self.log("expand", current)
+            current.close()
+            
             # expand the current node
             for state, action in self.expander_.expand(current):
                 # each successor is a (state, action) tuple which
                 # which we map to a corresponding search_node and push
                 # then push onto the OPEN list
                 succ_node = self.generate(state, action, current)
-                self.log("generate", succ_node)
 
                 if succ_node.g_ + succ_node.h_ > self.UB:
+                    self.log("generate-prune", succ_node)
                     # Prune the node if unweighted f is larger than upper bound.
                     continue
 
                 # succ_node not in any list, add it to open list
                 if succ_node not in self.all_nodes_list_:
+                    self.log("generate-new", succ_node)
                     # we need this open_handle_ to update the node in open list in the future
                     succ_node.priority_queue_handle_ = self.open_list_.push(succ_node)
                     self.all_nodes_list_[succ_node] = succ_node
@@ -91,7 +95,9 @@ class graph_search_anytime(base_search):
                     # It's not the one in the all nodes list,  we need the real node in the all nodes list.
                     exist = self.all_nodes_list_[succ_node]
                     self.relax(exist, succ_node)
-
+        
+            # self.log("close", current)
+        
         # OPEN list is exhausted if nodes
         if self.solution_ == None:
             self.status_ = "Failed"
@@ -109,7 +115,6 @@ class graph_search_anytime(base_search):
             exist.h_ = new.h_
             exist.depth_ = new.depth_
             exist.parent_ = new.parent_
-            self.log("relax", exist)
             if exist.is_closed():
                 # move the closed node into open list and mark open
                 exist.priority_queue_handle_ = self.open_list_.push(exist)
@@ -119,7 +124,9 @@ class graph_search_anytime(base_search):
                 # If handle exist, we are using bin_heap. We need to tell bin_heap one element's value
                 # is decreased. Bin_heap will update the heap to maintain priority structure.
                 self.open_list_.decrease(exist.priority_queue_handle_)
-
+            self.log('generate-update', exist)
+        else:
+            self.log('generate-dominated', exist)
     # Get statistic information
     # @return list A list of Statistic information
     def get_statistic(self):

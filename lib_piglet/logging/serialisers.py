@@ -1,3 +1,4 @@
+from re import sub
 from typing import Generic, TypeVar
 from lib_piglet.domains.graph import vertex
 from lib_piglet.domains.gridmap import grid_state
@@ -77,7 +78,23 @@ class grid_serialiser(domain_serialiser[grid_state]):
                     "$": "rect",
                     "width": 1,
                     "height": 1,
-                    "fill": "${{ ({destination: color.red, source: color.green, close: color.red, expand: color.orange, generate: color.yellow, solution: color.blue})[$.type] ?? theme.accent }}",
+                    "fill": 
+                        sub("\s+", " ", """
+                        ${{
+                            ({
+                                destination: color.red, 
+                                source: color.green, 
+                                close: color.pink, 
+                                expand: color.deepPurple, 
+                                generate: color.amber, 
+                                'generate-new': color.amber, 
+                                'generate-prune': color.amber, 
+                                'generate-dominated': color.amber, 
+                                'generate-update': color.amber, 
+                                solution: color.blue
+                            })[$.type] ?? theme.accent
+                        }}
+                    """).strip(),
                     "alpha": 1,
                     "x": "${{ $.x }}",
                     "y": "${{ $.y }}",
