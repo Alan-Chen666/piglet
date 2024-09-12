@@ -105,4 +105,5 @@ class graph_search(base_search):
                 self.open_list_.decrease(exist.priority_queue_handle_)
             self.log("generate-update", exist)
         else:
+            new.id = exist.id
             self.log('generate-dominated', new) 

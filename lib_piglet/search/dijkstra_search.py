@@ -96,8 +96,9 @@ class dijkstra_search(base_search):
                 # If handle exist, we are using bin_heap. We need to tell bin_heap one element's value
                 # is decreased. Bin_heap will update the heap to maintain priority structure.
                 self.open_list_.decrease(exist.priority_queue_handle_)
-            self.log("generate-update", new)
+            self.log("generate-update", exist)
         else:
+            new.id = exist.id
             self.log('generate-dominated', new)
 
     # extract the computed solution by following backpointers
