@@ -12,3 +12,5 @@ python piglet.py -p ./example/arena2.map.scen -f iterative -s depth --log trace 
 python piglet.py -p ./example/arena2.map.scen -f graph -s uniform --log trace out/uniform.trace.yaml -t 0.1 -x 2 -n 1
 # A*
 python piglet.py -p ./example/arena2.map.scen -f graph -s a-star --log trace out/a-star.trace.yaml -x 100 -n 1
+# A* anytime
+python piglet.py -p ./example/arena2.map.scen -f graph -s a-star --log trace out/a-star-anytime.trace.yaml --heuristic-weight 5 -x 50 -n 1 --anytime

@@ -85,12 +85,12 @@ class grid_serialiser(domain_serialiser[grid_state]):
                                 destination: color.red, 
                                 source: color.green, 
                                 close: color.pink, 
-                                expand: color.deepPurple, 
-                                generate: color.amber, 
-                                'generate-new': color.amber, 
-                                'generate-prune': color.amber, 
-                                'generate-dominated': color.amber, 
-                                'generate-update': color.amber, 
+                                expand: color.deepPurple,
+                                generating: color.amber, 
+                                'generating-new': color.amber, 
+                                'generating-pruned': color.blueGrey, 
+                                'dominated-by': color.amber, 
+                                'relaxed-by': color.amber, 
                                 solution: color.blue
                             })[$.type] ?? theme.accent
                         }}

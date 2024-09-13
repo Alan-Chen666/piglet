@@ -70,7 +70,7 @@ class tree_search(base_search):
                 # which we map to a corresponding search_node and push
                 # then push onto the OPEN list
                 succ_node = self.generate(state, action, current)
-                self.log("generate", succ_node)
+                self.log("generating", succ_node)
                 # Check does child node exceed depth limit or cost limit
                 if succ_node.depth_ > depth_limit or succ_node.f_ > cost_limit:
                     if min_next_d > succ_node.depth_:

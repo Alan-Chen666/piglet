@@ -66,7 +66,7 @@ class dijkstra_search(base_search):
                 # succ_node not in any list, add it to open list
                 if succ_node not in self.all_nodes_list_:
                     # we need this open_handle_ to update the node in open list in the future
-                    self.log("generate-new", succ_node)
+                    self.log("generating-new", succ_node)
                     succ_node.priority_queue_handle_ = self.open_list_.push(succ_node)
                     self.all_nodes_list_[succ_node] = succ_node
                     self.nodes_generated_ += 1
@@ -96,10 +96,11 @@ class dijkstra_search(base_search):
                 # If handle exist, we are using bin_heap. We need to tell bin_heap one element's value
                 # is decreased. Bin_heap will update the heap to maintain priority structure.
                 self.open_list_.decrease(exist.priority_queue_handle_)
-            self.log("generate-update", exist)
+            self.log("relaxed-by", exist)
         else:
             new.id = exist.id
-            self.log('generate-dominated', new)
+            self.log('generating', new) 
+            self.log('dominated-by', exist) 
 
     # extract the computed solution by following backpointers
     def solution(self):
