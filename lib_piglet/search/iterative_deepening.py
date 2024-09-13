@@ -5,6 +5,7 @@
 # @created: 2020-07-16
 #
 
+from typing import Callable
 from lib_piglet.search.base_search import base_search
 from lib_piglet.search.tree_search import tree_search
 from lib_piglet.search.search_node import search_node
@@ -28,7 +29,8 @@ class iterative_deepening(base_search):
     # @param start_state The start of the path
     # @param goal_state Then goal of the path
     # @return solution Contains a list of locations between start and goal
-    def get_path(self, start_state, goal_state, threshold_type=ID_threshold.cost):
+    def get_path(self, start_state, goal_state, threshold_type=ID_threshold.depth):
+        self.tree_search_engine.listener_ = self.listener_
         self.open_list_.clear()
         self.reset_statistic()
         self.start_ = start_state
@@ -45,13 +47,13 @@ class iterative_deepening(base_search):
 
             # Choose which value to limit based on search strategy
             if threshold_type == ID_threshold.cost:
+                self.tree_search_engine.name = f'cost-{cost_threshold}'
                 solution = self.tree_search_engine.get_path(self.start_, self.goal_, cost_limit=cost_threshold)
             elif threshold_type == ID_threshold.depth:
+                self.tree_search_engine.name = f'depth-{depth_threshold}'
                 solution = self.tree_search_engine.get_path(self.start_, self.goal_, depth_limit=depth_threshold)
             next_depth = solution[1]
             next_cost = solution[2]
-
-
 
             # Update statistic info
             self.nodes_generated_ += self.tree_search_engine.nodes_generated_
