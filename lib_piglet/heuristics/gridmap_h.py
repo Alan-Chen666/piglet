@@ -11,7 +11,7 @@ from lib_piglet.search.search_node import compare_node_g, compare_node_f, search
 from lib_piglet.utils.data_structure import bin_heap
 
 def piglet_heuristic(domain,current_state, goal_state):
-    return straight_heuristic(current_state, goal_state)
+    return manhattan_heuristic(current_state, goal_state)
 
 def pigelet_multi_agent_heuristic(domain,current_state, goal_state):
     h = 0

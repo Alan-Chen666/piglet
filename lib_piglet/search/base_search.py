@@ -50,7 +50,7 @@ class base_search:
     # @param goal_state Then goal of the path
     # @return a list of locations between start and goal
     def get_path(self, start_state, goal_state):
-        pass
+        raise NotImplementedError()
 
     # Generate search_node objects for a given state
     # For this operation we we need to know:
