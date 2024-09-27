@@ -8,4 +8,4 @@ State = TypeVar("State")
 
 class base_domain(Generic[State]):
     def get_name(self):
-        return NotImplementedError("Domains must be given a name.")
+        raise NotImplementedError("Domains must be given a name.")

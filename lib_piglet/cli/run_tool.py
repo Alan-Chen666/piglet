@@ -129,7 +129,7 @@ def run_task(t: task, args: args_interface, logger: search_logger):
         if args.strategy == "depth" and args.id_threshold_type == "depth":
             search_engine.get_path(start, goal, threshold_type=iterative_deepening.ID_threshold.depth)
         elif args.strategy == "depth" or args.id_threshold_type == "cost":
-            search_engine.get_path(start, goal, threshold_type=iterative_deepening.ID_threshold.depth)
+            search_engine.get_path(start, goal, threshold_type=iterative_deepening.ID_threshold.cost)
         elif args.strategy == "a-star":
             search_engine.get_path(start, goal, threshold_type=iterative_deepening.ID_threshold.cost)
     elif args.framework == "tree":
