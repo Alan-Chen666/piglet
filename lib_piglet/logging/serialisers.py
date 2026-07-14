@@ -79,7 +79,7 @@ class grid_serialiser(domain_serialiser[grid_state]):
                     "width": 1,
                     "height": 1,
                     "fill": 
-                        sub("\s+", " ", """
+                        sub(r"\s+", " ", """
                         ${{
                             ({
                                 destination: color.red, 

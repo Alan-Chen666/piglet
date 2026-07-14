@@ -1,36 +1,54 @@
 ![banner](./banner.png)
 
-# Piglet
+# Piglet — Assignment 1
 
-Piglet is a library of search algorithms that you can not only readily use, but incorporate into your application.
+Piglet is a library of search algorithms that you can readily use and incorporate into your own application. This branch is the starter scaffold for assignment 1: you implement your path-finding algorithms in `question1.py`, `question2.py` and `question3.py`.
 
 ## Requirements
 
-python >= 3.8
+- [uv](https://docs.astral.sh/uv/) — the only thing you need to install yourself.
 
-pyyaml == 6.0.2
+uv provisions the correct Python interpreter (3.14.6, pinned in `.python-version`) and every dependency for you. You do not need to install Python separately.
 
-## Install
+## Setup
 
-1. Clone the repo to your machine
-2. Run:
+1. Clone the repo to your machine.
+2. From the repo root, run:
 
-```
-$ python setup.py install
-```
-
-## Usage
-
-### Commandline Interface
-
-```
-$ piglet.py --help
+```bash
+uv sync
 ```
 
-run a scenario:
+That creates a virtual environment in `.venv` and installs everything, including [Flatland](https://github.com/ShortestPathLab/flatland), the railway simulator the assignment questions run against.
 
+Prefix commands with `uv run` to execute them inside that environment — there is no `activate` step to remember:
+
+```bash
+uv run python question1.py
 ```
-$ python piglet.py -p ./example/example_n_puzzle_scenario.scen -f graph -s uniform
+
+## The assignment
+
+Each question file contains a dummy implementation that always takes the first available transition. Replace it with your own algorithm.
+
+```bash
+uv run python question1.py    # single-agent path finding
+uv run python question2.py    # multi-agent, conflict-free
+uv run python question3.py    # multi-agent with malfunctions and replanning
+```
+
+Set `debug = True` or `visualizer = True` at the top of a question file for more output while you develop.
+
+## Piglet command line
+
+```bash
+uv run piglet --help
+```
+
+Run a scenario:
+
+```bash
+uv run piglet -p ./example/example_n_puzzle_scenario.scen -f graph -s uniform
 ```
 
 ### Generating search traces
@@ -38,41 +56,35 @@ $ python piglet.py -p ./example/example_n_puzzle_scenario.scen -f graph -s unifo
 Use search traces to analyse and debug algorithms in [Posthoc](https://posthoc.pathfinding.ai). Add the `--log trace` argument to make Piglet output search traces.
 
 ```bash
-python piglet.py -p ./example/arena2.min.scen -f graph -s a-star --log trace
+uv run piglet -p ./example/arena2.min.scen -f graph -s a-star --log trace
 ```
 
-### Piglet Library
+## Piglet library
 
-Piglet provides a variety of flexible search algorithms. These algorithms are
-able to help you to build your application.
-
-#### Example
-
-To use an algorithm you need a domain instance, an expander instance and a search instance.
+To run a search you need three things: a domain, an expander, and a search.
 
 ```python
-import os,sys
 from lib_piglet.domains import gridmap
 from lib_piglet.expanders.grid_expander import grid_expander
-from lib_piglet.search.tree_search import tree_search
-from lib_piglet.utils.data_structure import bin_heap,stack,queue
+from lib_piglet.search.graph_search import graph_search
+from lib_piglet.search.search_node import compare_node_f
+from lib_piglet.utils.data_structure import bin_heap
+from lib_piglet.heuristics import gridmap_h
 
-mapfile = "./example/gridmap/empty-16-16.map"
-
-# create an instance of gridmap domain
-gm = gridmap.gridmap(mapfile)
-
-# create an instance of grid_expander and pass the girdmap instance to the expander.
+# a gridmap domain, and an expander that generates its successors
+gm = gridmap.gridmap("./example/gridmap/empty-16-16.map")
 expander = grid_expander(gm)
 
-# create an instance of tree_search, and pass an open list (we use a binary heap here)
-# and the expander to it.
-search = tree_search(bin_heap(), expander)
+# a search, given an open list (a binary heap ordered on f) and the expander
+search = graph_search(
+    bin_heap(compare_node_f),
+    expander,
+    heuristic_function=gridmap_h.piglet_heuristic,
+)
 
-# start search by proving a start state and goal state. For gridmap a state is a (x,y) tuple
-solution = search.get_path((1,2),(10,2))
-
-# print solution
+# for a gridmap, a state is an (x, y) tuple
+solution = search.get_path((1, 2), (10, 2))
 print(solution)
-
 ```
+
+A heuristic passed to a search is always called as `h(domain, current_state, goal_state)`. `piglet_heuristic` is that entry point for each domain; it delegates to the plain two-argument heuristics such as `gridmap_h.manhattan_heuristic`. Swap the heuristic by editing `piglet_heuristic`, and use `compare_node_g` instead of `compare_node_f` for an uninformed search.
