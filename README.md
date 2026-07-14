@@ -87,4 +87,4 @@ solution = search.get_path((1, 2), (10, 2))
 print(solution)
 ```
 
-A heuristic passed to a search is always called as `h(domain, current_state, goal_state)`. `piglet_heuristic` is that entry point for each domain; it delegates to the plain two-argument heuristics such as `gridmap_h.manhattan_heuristic`. Swap the heuristic by editing `piglet_heuristic`, and use `compare_node_g` instead of `compare_node_f` for an uninformed search.
+Every heuristic takes `(domain, current_state, goal_state)`, so any of them can be handed straight to a search. `piglet_heuristic` is the default each domain uses from the command line; swap in `gridmap_h.octile_heuristic`, `gridmap_h.straight_heuristic` or your own to compare. Use `compare_node_g` instead of `compare_node_f` for an uninformed search.

@@ -37,21 +37,23 @@ def get_logger(spec: Union[list, None], auto_filename: str = None):
 def main():
 
     args = parse_args()
-    if args.problem is None and sys.stdin.isatty():
-        print("err; You must provide a problem scenario file or provide problem through standard input", file = sys.stderr)
-        print("piglet.py -h for help", file=sys.stderr)
-        exit(1)
 
     header_readed = False
 
-    # detect which source to accept scenario data
-    if not sys.stdin.isatty():
-        source = sys.stdin
-    else:
+    # detect which source to accept scenario data. An explicit -p always wins:
+    # falling back to stdin whenever it is not a tty would silently ignore -p
+    # for any non-interactive caller, such as a script, an IDE console or CI.
+    if args.problem is not None:
         if not os.path.exists(args.problem):
             print("err; Given problem scenario file does not exist: {}".format(args.problem), file = sys.stderr)
             exit(1)
         source = open(args.problem)
+    elif not sys.stdin.isatty():
+        source = sys.stdin
+    else:
+        print("err; You must provide a problem scenario file or provide problem through standard input", file = sys.stderr)
+        print("piglet.py -h for help", file=sys.stderr)
+        exit(1)
 
     if not is_log_mode(args.log):
         print_header(args.anytime)

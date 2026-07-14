@@ -21,7 +21,7 @@ puzzle.set_start([1,2,3,4,5,6,7,8,9,"d",11,12,13,14.0,"15",10])
 expander = n_puzzle_expander(puzzle)
 search = tree_search(queue(), expander, time_limit=10)
 path = search.get_path(puzzle.start_state(), puzzle.goal_state())
-print_header()
+print_header(False)
 print(statistic_template.format("","",*[str(x) for x in search.get_statistic()], str(search.solution_)))
 
 search = tree_search(stack(), expander, time_limit=10)

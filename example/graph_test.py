@@ -18,7 +18,7 @@ inputfile = os.path.join(file_folder, "graphmap/sample.graph")
 gm = graph.graph(inputfile)
 
 expander = graph_expander(gm)
-print_header()
+print_header(False)
 
 
 

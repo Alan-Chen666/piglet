@@ -18,9 +18,9 @@ pattern_database_pattern_width = 0
 
 # piglet cli will use this function as heuristic.
 def piglet_heuristic(domain,current_state, goal_state):
-    return sum_manhattan_heuristic(current_state, goal_state)
+    return sum_manhattan_heuristic(domain, current_state, goal_state)
 
-def num_wrong_heuristic(current_state: puzzle_state, goal_state: puzzle_state):
+def num_wrong_heuristic(domain, current_state: puzzle_state, goal_state: puzzle_state):
     length = len(goal_state.state_list_)
     width = math.sqrt(length)
     h = 0
@@ -29,7 +29,7 @@ def num_wrong_heuristic(current_state: puzzle_state, goal_state: puzzle_state):
             h+=1
     return h
 
-def sum_manhattan_heuristic(current_state: puzzle_state, goal_state: puzzle_state):
+def sum_manhattan_heuristic(domain, current_state: puzzle_state, goal_state: puzzle_state):
     length = len(goal_state.state_list_)
     width = math.sqrt(length)
     h = 0
@@ -41,7 +41,7 @@ def sum_manhattan_heuristic(current_state: puzzle_state, goal_state: puzzle_stat
     return h
 
 
-def sum_straight_heuristic(current_state, goal_state):
+def sum_straight_heuristic(domain, current_state, goal_state):
     length = len(goal_state.state_list_)
     width = math.sqrt(length)
     h = 0
@@ -87,7 +87,7 @@ def build_fringe_pattern_database(goal_state: puzzle_state):
     goal_pattern = extract_fringe_pattern(goal_state)
     return run_dijkstra_n_puzzle(goal_pattern).paths_
 
-def corner_pattern_database_heuristic(current_state: puzzle_state,goal_state: puzzle_state):
+def corner_pattern_database_heuristic(domain, current_state: puzzle_state,goal_state: puzzle_state):
     global pattern_database,pattern_database_pattern_width
     current_pattern = extract_corner_pattern(current_state)
     if len(pattern_database) == 0 or len(goal_state.state_list_)!= pattern_database_pattern_width:
@@ -97,7 +97,7 @@ def corner_pattern_database_heuristic(current_state: puzzle_state,goal_state: pu
         sys.stdout.write("\033[F")
     return pattern_database[current_pattern]
 
-def fringe_pattern_database_heuristic(current_state: puzzle_state,goal_state: puzzle_state):
+def fringe_pattern_database_heuristic(domain, current_state: puzzle_state,goal_state: puzzle_state):
     global pattern_database,pattern_database_pattern_width
     current_pattern = extract_fringe_pattern(current_state)
     if len(pattern_database) == 0 or len(goal_state.state_list_)!= pattern_database_pattern_width:
