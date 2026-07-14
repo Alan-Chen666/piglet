@@ -13,10 +13,9 @@ for downloads.
 - [Step 1: Install Git](#step-1-install-git)
 - [Step 2: Install uv](#step-2-install-uv)
 - [Step 3: Download your assignment repository](#step-3-download-your-assignment-repository)
-- [Step 4: Install the assignment](#step-4-install-the-assignment)
-- [Step 5: Check it works](#step-5-check-it-works)
-- [Step 6: Watch it run](#step-6-watch-it-run)
-- [Step 7: Start the assignment](#step-7-start-the-assignment)
+- [Step 4: Check it works](#step-4-check-it-works)
+- [Step 5: Watch it run](#step-5-watch-it-run)
+- [Step 6: Start the assignment](#step-6-start-the-assignment)
 - [The piglet search library](#the-piglet-search-library)
 - [Where to go next](#where-to-go-next)
 - [Troubleshooting](#troubleshooting)
@@ -27,8 +26,8 @@ supported, and the assignment is the same on each.
 
 > **What am I installing?** Two things, and only two: **Git**, to download code, and **uv**, to
 > manage Python. Everything else — the right Python interpreter, Piglet, and the Flatland railway
-> simulator the questions run against — arrives automatically in [Step 4](#step-4-install-the-assignment).
-> You do **not** need to install Python yourself.
+> simulator the questions run against — installs itself the first time you run the assignment in
+> [Step 4](#step-4-check-it-works). You do **not** need to install Python yourself.
 
 ---
 
@@ -219,45 +218,35 @@ $ ls          # Windows PowerShell: dir
 
 ---
 
-Step 4: Install the assignment
+Step 4: Check it works
 ---
 
-One command installs everything — the right Python, Piglet, the Flatland railway simulator, and every
-dependency, all pinned to the exact versions in `uv.lock`:
-
-```console
-$ uv sync
-```
-
-The first run downloads a lot (it builds Flatland from source) and takes a few minutes. Later runs
-take seconds.
-
-This creates a hidden `.venv` folder inside the project: a **virtual environment**, a private Python
-installation used by this project alone. You never have to "activate" it — prefixing a command with
-`uv run` does that for you, and every command below is written that way.
-
-> **Use `uv run`, always.** `uv run python question1.py` works; plain `python question1.py` will fail
-> with `Cannot load flatland modules!`, because that Python knows nothing about this project's
-> environment. This is the single most common setup problem, and
-> [Troubleshooting](#cannot-load-flatland-modules) covers it.
-
----
-
-Step 5: Check it works
----
-
-The three question files already contain a **dummy implementation** — a deliberately naive planner
-that always takes the first available track. It is not a real algorithm, and it is not supposed to
-be: it is there so that the assignment runs before you have written a line of
-code. Replacing it is the assignment.
-
-Run question 1:
+There is no install step. Just run question 1:
 
 ```console
 $ uv run python question1.py
 ```
 
-It solves 40 test cases in a row and prints a table:
+**The first time, this will sit there for a few minutes.** That is `uv run` setting the project up
+before it runs anything: it reads `.python-version` and `pyproject.toml`, downloads the right Python,
+and installs Piglet, the Flatland railway simulator, and every dependency at the exact versions
+pinned in `uv.lock`. It all goes into a hidden `.venv` folder inside the project — a **virtual
+environment**, a private Python installation used by this project alone. Later runs skip all of that
+and start immediately.
+
+> **Use `uv run`, always.** It is not just a way to start Python: it is what keeps the environment
+> correct, and it re-checks it every time. `uv run python question1.py` works; plain
+> `python question1.py` will fail with `Cannot load flatland modules!`, because that Python knows
+> nothing about this project's environment. There is no "activate" step to remember, and no install
+> command to forget. This is the single most common setup problem, and
+> [Troubleshooting](#cannot-load-flatland-modules) covers it.
+
+The three question files already contain a **dummy implementation** — a deliberately naive planner
+that always takes the first available track. It is not a real algorithm, and it is not supposed to
+be: it is there so that the assignment runs before you have written a line of code. Replacing it is
+the assignment.
+
+Once the setup finishes, it solves 40 test cases in a row and prints a table:
 
 ```
 Test case          | Total agents | Agents done  | DDLs met     | Plan Time  | SIC          | Makespan     | ...
@@ -290,7 +279,7 @@ freeze.)
 
 ---
 
-Step 6: Watch it run
+Step 5: Watch it run
 ---
 
 The table tells you *whether* the trains arrived. To see *why* they did not, watch them.
@@ -355,7 +344,7 @@ lookup.
 
 ---
 
-Step 7: Start the assignment
+Step 6: Start the assignment
 ---
 
 There are three questions, and you write your code in three files. **Only the `get_path` function
@@ -431,7 +420,7 @@ print(solution)
 ```
 
 Note that this is a *gridmap*, where a state is just an `(x, y)` position — the Flatland railway is
-not, for the reason given in Step 7. The library is a toolkit and a worked reference, not a drop-in
+not, for the reason given in Step 6. The library is a toolkit and a worked reference, not a drop-in
 answer.
 
 You can also run searches straight from the command line, which is the fastest way to build intuition
@@ -510,7 +499,8 @@ Two causes, in order of likelihood:
    `pyproject.toml`. Check where you are with `pwd` (macOS/Linux/WSL) or `Get-Location` (Windows),
    and `cd` back if needed.
 
-If neither fixes it, run `uv sync` again and watch for errors.
+If neither fixes it, run `uv sync` — that does the install on its own, without running anything
+afterwards, so any error it hits is printed plainly instead of scrolling past.
 
 ### The window does not open, and I get a URL instead
 
@@ -537,7 +527,7 @@ at it. Press <kbd>Enter</kbd>. Your results are in the table printed just above.
 ### Everything runs, but almost no agents are done
 
 That is the dummy implementation doing its job badly, exactly as intended — see
-[Step 5](#step-5-check-it-works). 15 of 40 on question 1 means your setup is correct and the
+[Step 4](#step-4-check-it-works). 15 of 40 on question 1 means your setup is correct and the
 assignment has not been done yet. Start writing `get_path`.
 
 ### A run takes forever
