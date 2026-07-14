@@ -4,6 +4,10 @@
 
 Piglet is a library of search algorithms that you can readily use and incorporate into your own application. This branch is the starter scaffold for assignment 1: you implement your path-finding algorithms in `question1.py`, `question2.py` and `question3.py`.
 
+> **New to terminals, Git or Python environments?** Follow [GETTING_STARTED.md](GETTING_STARTED.md)
+> instead — it sets the assignment up from scratch, step by step, and ends with trains moving on your
+> screen. The rest of this README assumes you are already comfortable with the tooling.
+
 ## Requirements
 
 - [uv](https://docs.astral.sh/uv/) — the only thing you need to install yourself.
