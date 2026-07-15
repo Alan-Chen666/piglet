@@ -1,10 +1,9 @@
 # 🐷 Getting Started with Piglet
-
 ========
 
 This guide takes you from a fresh computer to Assignment 1 running on your screen, with trains moving
-in a window. It assumes **no prior experience** with terminals, Git or Python environments — if you
-have used them before, skip ahead; nothing here is out of order.
+in a window. It assumes no prior experience with terminals, Git or Python environments; if you have
+used them before, skip ahead.
 
 Work through the steps in sequence. The whole thing takes about 20 minutes, most of which is waiting
 for downloads.
@@ -21,13 +20,13 @@ for downloads.
 - [Troubleshooting](#troubleshooting)
 
 The assignment is tested with Python 3.14 on modern versions of Windows, macOS and Linux, and inside
-WSL (Windows Subsystem for Linux). Pick whichever of those you already have — all four are fully
-supported, and the assignment is the same on each.
+WSL (Windows Subsystem for Linux). Pick whichever you already have; the assignment is the same on
+each.
 
-> **What am I installing?** Two things, and only two: **Git**, to download code, and **uv**, to
-> manage Python. Everything else — the right Python interpreter, Piglet, and the Flatland railway
-> simulator the questions run against — installs itself the first time you run the assignment in
-> [Step 4](#step-4-check-it-works). You do **not** need to install Python yourself.
+> **What am I installing?** Just two things: Git, to download code, and uv, to manage Python. The
+> right Python interpreter, Piglet, and the Flatland railway simulator all install themselves the
+> first time you run the assignment in [Step 4](#step-4-check-it-works). You never install Python
+> yourself.
 
 ---
 
@@ -53,7 +52,7 @@ That is PowerShell, and it is what the Windows commands in this guide assume.
 ### WSL on Windows
 
 WSL runs a real Ubuntu Linux system inside Windows. It is a good choice if your unit or your own
-projects expect Linux tools, and the assignment fully supports it — including the graphical window.
+projects expect Linux tools, and the assignment runs on it, graphical window included.
 
 If you do not have WSL yet, open **Terminal as Administrator** (press <kbd>Win</kbd>, type
 `terminal`, then right-click it and choose **Run as administrator**) and run:
@@ -63,8 +62,8 @@ If you do not have WSL yet, open **Terminal as Administrator** (press <kbd>Win</
 ```
 
 Restart your computer when it asks. On the next boot an Ubuntu window opens and asks you to invent a
-username and password — the password is for Ubuntu, you will not see the characters as you type, and
-that is normal.
+username and password. The password is for Ubuntu, and you will not see the characters as you type
+them.
 
 From then on, open WSL by pressing <kbd>Win</kbd>, typing `ubuntu`, and pressing <kbd>Enter</kbd>.
 Your prompt ends in `$`:
@@ -73,8 +72,8 @@ Your prompt ends in `$`:
 you@machine:~$
 ```
 
-Once you are at that `$` prompt you are on Linux. **Follow the Linux instructions from here on**, not
-the Windows ones.
+Once you are at that `$` prompt you are on Linux. From here on, follow the Linux instructions rather
+than the Windows ones.
 
 ### macOS
 
@@ -88,7 +87,7 @@ menu. Your prompt ends in `$`.
 
 ### How to read the commands in this guide
 
-Code blocks show a prompt character that you **do not type**. Type only what comes after it.
+Code blocks show a prompt character that you do not type. Type only what comes after it.
 
 ```console
 $ echo hello
@@ -128,8 +127,7 @@ Notes:
 - **Windows**: if `winget` is not recognised, download the installer from
   [git-scm.com](https://git-scm.com/download/win) and accept every default.
 - **WSL/Linux**: `sudo` means "run as administrator". It will ask for the password you invented in
-  Step 0. Nothing appears on screen as you type it — that is deliberate, just type and press
-  <kbd>Enter</kbd>.
+  Step 0. Nothing appears on screen as you type it; type it and press <kbd>Enter</kbd> anyway.
 - **macOS**: this installs Apple's Command Line Tools, which include Git. A dialog box will pop up;
   click **Install** and wait.
 
@@ -149,11 +147,10 @@ git version 2.43.0
 Step 2: Install uv
 ---
 
-**uv** manages Python for you. You do **not** need to install Python yourself, and you should not try
-to — uv reads the assignment's `.python-version` file, downloads exactly the interpreter the
-assignment needs (currently 3.14.6), and keeps it separate from anything else on your machine. This
-is what stops the classic "it works on my laptop but not the tutor's" problem, which matters here
-because your code is marked by running it.
+**uv** manages Python for you, so do not install Python yourself. uv reads the assignment's
+`.python-version` file, downloads the interpreter it names (currently 3.14.6), and keeps it isolated
+from the rest of your machine. That isolation matters here, because your code is marked by running
+it: the tutor's setup has to match yours.
 
 Run the installer for your platform:
 
@@ -184,8 +181,8 @@ Any version number means you are fine. If it says *command not found*, see
 Step 3: Download your assignment repository
 ---
 
-Your unit gives you the URL of **your own repository** — it is yours alone, and it is where your
-marked work lives. Use that URL here, not a classmate's and not one copied from this page.
+Your unit gives you the URL of your own repository. That is where your marked work lives, so use it
+here rather than a classmate's or one copied from this page.
 
 Choose where to keep your work and move there. `cd` means "change directory":
 
@@ -200,14 +197,14 @@ $ git clone <the-url-your-unit-gave-you>
 $ cd <the-folder-it-created>
 ```
 
-Because the repository is private, Git will ask you to prove who you are — a browser login, an SSH
-key, or an access token, depending on what your unit uses. Follow the instructions from your unit
-here; if you get stuck, see [Troubleshooting](#git-clone-asks-for-a-password-or-is-rejected).
+Because the repository is private, Git will ask you to authenticate. How depends on your unit: a
+browser login, an SSH key, or an access token. Follow your unit's instructions; if you get stuck,
+see [Troubleshooting](#git-clone-asks-for-a-password-or-is-rejected).
 
 You are now *inside* the project folder, which is where every remaining command in this guide must be
 run. If you close your terminal and come back tomorrow, you will need to `cd` back here first.
 
-Check you are in the right place — you should see `question1.py` and `pyproject.toml`:
+Check you are in the right place; you should see `question1.py` and `pyproject.toml`:
 
 ```console
 $ ls          # Windows PowerShell: dir
@@ -227,24 +224,21 @@ There is no install step. Just run question 1:
 $ uv run python question1.py
 ```
 
-**The first time, this will sit there for a few minutes.** That is `uv run` setting the project up
-before it runs anything: it reads `.python-version` and `pyproject.toml`, downloads the right Python,
-and installs Piglet, the Flatland railway simulator, and every dependency at the exact versions
-pinned in `uv.lock`. It all goes into a hidden `.venv` folder inside the project — a **virtual
-environment**, a private Python installation used by this project alone. Later runs skip all of that
-and start immediately.
+The first time, this sits there for a few minutes. That is `uv run` setting the project up before it
+runs anything: it reads `.python-version` and `pyproject.toml`, downloads the right Python, and
+installs Piglet, Flatland, and the rest of the dependencies at the versions pinned in `uv.lock`. All
+of it goes into `.venv`, a hidden folder holding a virtual environment used only by this project.
+Later runs skip the setup and start immediately.
 
-> **Use `uv run`, always.** It is not just a way to start Python: it is what keeps the environment
-> correct, and it re-checks it every time. `uv run python question1.py` works; plain
-> `python question1.py` will fail with `Cannot load flatland modules!`, because that Python knows
-> nothing about this project's environment. There is no "activate" step to remember, and no install
-> command to forget. This is the single most common setup problem, and
-> [Troubleshooting](#cannot-load-flatland-modules) covers it.
+> **Always use `uv run`.** It runs your command inside the project's environment, re-checking that
+> environment first. `uv run python question1.py` works; plain `python question1.py` fails with
+> `Cannot load flatland modules!`, because that Python does not have Flatland installed. You never
+> activate the environment or install into it by hand. This trips people up more than anything else
+> in the setup — [Troubleshooting](#cannot-load-flatland-modules) covers it.
 
-The three question files already contain a **dummy implementation** — a deliberately naive planner
-that always takes the first available track. It is not a real algorithm, and it is not supposed to
-be: it is there so that the assignment runs before you have written a line of code. Replacing it is
-the assignment.
+The three question files already contain a dummy implementation: a naive planner that always takes
+the first available track. It is there so the assignment runs before you have written any code, and
+replacing it is the assignment.
 
 Once the setup finishes, it solves 40 test cases in a row and prints a table:
 
@@ -257,15 +251,15 @@ single_test_case/level0_test_2 | 1            | 1            | 1            | 0.
 Summary            | 40 (sum)     | 15 (sum)     | 15(sum)      | 0.0(sum)   | 23617 (sum)  | 2737 (sum)   | ...
 ```
 
-**If you see that table, your setup is complete.** One row per test case, then a `Summary` row.
+If you see that table, your setup is complete: one row per test case, then a `Summary` row.
 
-The column to watch is **Agents done**: how many trains actually reached their goal. The dummy gets
-**15 of 40** — it stumbles onto the goal when the track happens to lead there, and gets hopelessly
-lost otherwise. That number is your starting line. A correct single-agent search should reach 40.
+The column to watch is `Agents done`: how many trains reached their goal. The dummy gets 15 of 40,
+stumbling onto the goal when the track happens to lead there and getting lost otherwise. That is your
+starting line; a correct single-agent search should reach 40.
 
-The other columns score *how good* the successful plans are — `SIC` (sum of individual costs, i.e.
+The other columns score *how good* the successful plans are: `SIC` (sum of individual costs, i.e.
 total travel time over all trains) and `Makespan` (the time the last train arrives), both
-lower-is-better. Your unit's assignment specification defines exactly how these turn into a mark.
+lower-is-better. Your unit's assignment specification defines how these turn into a mark.
 
 At the end you will see:
 
@@ -273,9 +267,8 @@ At the end you will see:
 Press enter to exit:
 ```
 
-The program is finished and waiting for you. Press <kbd>Enter</kbd>. (This exists so that the
-visualiser window in the next step stays open until you have finished looking at it — it is not a
-freeze.)
+The program has finished and is waiting for you; press <kbd>Enter</kbd>. (It waits here so the
+visualiser window in the next step stays open until you are done looking at it.)
 
 ---
 
@@ -295,8 +288,8 @@ level = 0
 test = 0
 ```
 
-Set the visualiser on, and pin the run to a single test case — otherwise you will sit through all 40
-of them, one window at a time:
+Set the visualiser on, and pin the run to a single test case, or you will sit through all 40 of them,
+one window at a time:
 
 ```python
 debug = True
@@ -324,8 +317,8 @@ returned. Closing the window ends the program. You will also see a panel in the 
 ╰──────────────────────────────────────────────────╯
 ```
 
-If no window appears, the simulation is still running perfectly well — open that
-`http://127.0.0.1:8081/` address in your browser and you will see exactly the same thing. See
+If no window appears, the simulation is still running; open the `http://127.0.0.1:8081/` address in
+your browser to see the same thing. See
 [Troubleshooting](#the-window-does-not-open-and-i-get-a-url-instead).
 
 `debug = True` adds running commentary to the terminal, including the message you will come to know
@@ -335,9 +328,8 @@ best:
 Agent 0 cannot reach location (5, 7) from location (3, 2). Path is inconsistent.
 ```
 
-That means your path jumped between two cells that are not connected by track. Trains cannot teleport,
-and they cannot reverse on the spot — which is exactly what makes this a search problem and not a
-lookup.
+That means your path jumped between two cells that are not connected by track. Trains cannot teleport
+or reverse on the spot, which is what makes the assignment a search problem.
 
 > **Turn the visualiser off before a full run.** Rendering 40 or 56 episodes is slow, and you only
 > need the table.
@@ -347,15 +339,15 @@ lookup.
 Step 6: Start the assignment
 ---
 
-There are three questions, and you write your code in three files. **Only the `get_path` function
-(and, in question 3, `replan`) is yours to change** — leave the code below the
-`if __name__ == "__main__":` line alone, since that is what the markers run.
+There are three questions, one file each. You change only the `get_path` function (and, in question
+3, `replan`); leave the code below the `if __name__ == "__main__":` line alone, since that is what
+the markers run.
 
 | File | Question | Test cases |
 | --- | --- | --- |
 | [question1.py](question1.py) | One train, find a shortest path | 40, in `single_test_case/` (levels 0–4) |
 | [question2.py](question2.py) | Many trains, plans must not collide | 56, in `multi_test_case/` (levels 0–6) |
-| [question3.py](question3.py) | Many trains that break down — replan mid-episode | 56, plus a deadline (`.ddl`) per case |
+| [question3.py](question3.py) | Many trains, some breaking down and needing a replan mid-episode | 56, plus a deadline (`.ddl`) per case |
 
 ```console
 $ uv run python question1.py    # single-agent path finding
@@ -364,12 +356,11 @@ $ uv run python question3.py    # multi-agent with malfunctions and replanning
 ```
 
 Higher `level` numbers mean bigger maps and more trains, so start at level 0 and work up. Question 2
-and 3 take noticeably longer to run than question 1, because there is far more to simulate.
+and 3 take longer to run than question 1, since there is more to simulate.
 
-What each function is handed and what it must give back is documented in the comments above it. In
-short, `get_path` receives a start, a goal, and `rail` — a Flatland `GridTransitionMap` describing
-which moves the track allows — and must return the list of `(x, y)` cells the train visits, one per
-timestep.
+What each function receives and must return is documented in the comments above it. In short,
+`get_path` receives a start, a goal, and `rail`, a Flatland `GridTransitionMap` that says which moves
+the track allows; it must return the list of `(x, y)` cells the train visits, one per timestep.
 
 The one call you cannot avoid is:
 
@@ -377,15 +368,15 @@ The one call you cannot avoid is:
 valid_transitions = rail.get_transitions(x, y, direction)
 ```
 
-It returns four booleans — can I move north, east, south, west — **given the direction I am already
-facing**. That last part is the crux of the whole assignment: a train's legal moves depend on its
-heading, so a search state is a *position and a direction*, not just a position. Treat it as a plain
-grid and you will produce paths the simulator rejects.
+It returns four booleans (can I move north, east, south, west) for the direction the train is already
+facing. That direction is the crux of the assignment: a train's legal moves depend on its heading, so
+a search state is a *position together with a direction*. Treat it as a plain grid and you will
+produce paths the simulator rejects.
 
-To understand the railway model properly — transitions, agent attributes, malfunctions, and what the
-simulator does with the actions you produce — read the **[Flatland getting started
-guide](https://github.com/ShortestPathLab/flatland/blob/master/GETTING_STARTED.md)**. It covers
-Flatland itself in depth, and this assignment is built directly on it.
+To understand the railway model — transitions, agent attributes, malfunctions, and what the simulator
+does with the actions you produce — read the [Flatland getting started
+guide](https://github.com/ShortestPathLab/flatland/blob/master/GETTING_STARTED.md). It covers
+Flatland in depth, and this assignment builds on it.
 
 ---
 
@@ -419,12 +410,12 @@ solution = search.get_path((1, 2), (10, 2))
 print(solution)
 ```
 
-Note that this is a *gridmap*, where a state is just an `(x, y)` position — the Flatland railway is
-not, for the reason given in Step 6. The library is a toolkit and a worked reference, not a drop-in
-answer.
+Note that this is a *gridmap*, where a state is just an `(x, y)` position; the Flatland railway is
+not, for the reason given in Step 6. Treat the library as a reference to borrow from rather than a
+drop-in answer.
 
-You can also run searches straight from the command line, which is the fastest way to build intuition
-for how the algorithms differ:
+You can also run searches straight from the command line, which is a quick way to see how the
+algorithms differ:
 
 ```console
 $ uv run piglet -p ./example/arena2.min.scen -f graph -s a-star
@@ -432,9 +423,8 @@ $ uv run piglet -p ./example/arena2.min.scen -f graph -s uniform    # compare th
 $ uv run piglet --help
 ```
 
-Add `--log trace` to record a **search trace**, which you can then load into
-[Posthoc](https://posthoc.pathfinding.ai) and step through node by node — the most direct way to see
-what your search is actually doing:
+Add `--log trace` to record a search trace, then load it into
+[Posthoc](https://posthoc.pathfinding.ai) and step through the search node by node:
 
 ```console
 $ uv run piglet -p ./example/arena2.min.scen -f graph -s a-star --log trace
@@ -446,8 +436,8 @@ Where to go next
 ---
 
 - **[Flatland getting started guide](https://github.com/ShortestPathLab/flatland/blob/master/GETTING_STARTED.md)**
-  — read this next. It is the reference for Flatland itself: the environment, the railway model, agent
-  attributes, malfunctions and the renderer.
+  — read this next. It documents Flatland: the environment, the railway model, agent attributes,
+  malfunctions and the renderer.
 - **[README.md](README.md)** — the Piglet library and its command line, in more detail.
 - **Your unit's assignment specification** — the definitive word on what to implement and how it is
   marked. This guide only gets you to the starting line.
@@ -480,13 +470,13 @@ That lasts until you close the terminal. To make it permanent, restart your mach
 
 ### `git clone` asks for a password, or is rejected
 
-Unlike a public repository, your assignment repository is private, so being asked to prove who you
-are is *expected* — the question is only which method your unit uses (a browser login, an SSH key, or
-an access token). Follow your unit's instructions for that, and note that your normal account
-password often will **not** work: many hosts require a token or key instead.
+Your assignment repository is private, so a prompt to authenticate is expected; the only question is
+which method your unit uses (browser login, SSH key, or access token). Follow your unit's
+instructions, and note that your normal account password often will not work, since many hosts
+require a token or key instead.
 
 If you are refused access outright, check the URL for a typo before anything else, and confirm you
-are using **your own** repository's URL.
+are using your own repository's URL.
 
 ### `Cannot load flatland modules!`
 
@@ -504,9 +494,9 @@ afterwards, so any error it hits is printed plainly instead of scrolling past.
 
 ### The window does not open, and I get a URL instead
 
-Nothing has gone wrong: if Flatland cannot open a desktop window, it serves the same simulation to
-your browser and prints the address instead. Open it (usually `http://127.0.0.1:8081/`) and you will
-see exactly the same trains. Your setup is *working* — only the window is missing.
+If Flatland cannot open a desktop window, it serves the same simulation to your browser and prints
+the address instead. Open it (usually `http://127.0.0.1:8081/`) to see the same trains. The window is
+the only thing missing.
 
 On a Linux desktop the window needs GTK/WebKit system libraries that pip cannot install:
 
@@ -521,14 +511,14 @@ goes into more depth, including WSL.
 
 ### The terminal is stuck at `Press enter to exit:`
 
-It is not stuck — the run has *finished*, and it is holding the visualiser window open so you can look
-at it. Press <kbd>Enter</kbd>. Your results are in the table printed just above.
+The run has finished; it holds here so the visualiser window stays open while you look at it. Press
+<kbd>Enter</kbd> to exit. Your results are in the table printed just above.
 
 ### Everything runs, but almost no agents are done
 
-That is the dummy implementation doing its job badly, exactly as intended — see
-[Step 4](#step-4-check-it-works). 15 of 40 on question 1 means your setup is correct and the
-assignment has not been done yet. Start writing `get_path`.
+That is the dummy implementation, which is meant to do badly — see
+[Step 4](#step-4-check-it-works). 15 of 40 on question 1 means your setup is correct and you have not
+started yet. Start writing `get_path`.
 
 ### A run takes forever
 
@@ -547,5 +537,5 @@ running it.
 
 ### Something else
 
-Ask on the unit forum. Include your operating system, the command you ran, and the **complete** error
-message — screenshots of a single line are rarely enough to diagnose anything.
+Ask on the unit forum. Include your operating system, the command you ran, and the complete error
+message; screenshots of a single line are rarely enough to diagnose anything.

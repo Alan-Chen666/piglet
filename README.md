@@ -2,11 +2,11 @@
 
 # Piglet — Assignment 1
 
-Piglet is a library of search algorithms that you can readily use and incorporate into your own application. This branch is the starter scaffold for assignment 1: you implement your path-finding algorithms in `question1.py`, `question2.py` and `question3.py`.
+Piglet is a library of search algorithms you can reuse in your own code. This branch is the starter scaffold for assignment 1: you implement your path-finding algorithms in `question1.py`, `question2.py` and `question3.py`.
 
 > **New to terminals, Git or Python environments?** Follow [GETTING_STARTED.md](GETTING_STARTED.md)
-> instead — it sets the assignment up from scratch, step by step, and ends with trains moving on your
-> screen. The rest of this README assumes you are already comfortable with the tooling.
+> instead. It sets the assignment up from scratch and ends with trains moving on your screen. The
+> rest of this README assumes you are comfortable with the tooling.
 
 ## Requirements
 
@@ -16,20 +16,13 @@ uv provisions the correct Python interpreter (3.14.6, pinned in `.python-version
 
 ## Setup
 
-1. Clone the repo to your machine.
-2. From the repo root, run:
-
-```bash
-uv sync
-```
-
-That creates a virtual environment in `.venv` and installs everything, including [Flatland](https://github.com/ShortestPathLab/flatland), the railway simulator the assignment questions run against.
-
-Prefix commands with `uv run` to execute them inside that environment — there is no `activate` step to remember:
+Clone the repo, then run a question straight away:
 
 ```bash
 uv run python question1.py
 ```
+
+There is no separate install step. The first `uv run` creates a virtual environment in `.venv` and installs the dependencies, including [Flatland](https://github.com/ShortestPathLab/flatland), the railway simulator the assignment questions run against; this takes a few minutes. Later runs skip it and start immediately. Prefixing a command with `uv run` runs it inside that environment, so there is no `activate` step to remember.
 
 ## The assignment
 
