@@ -38,22 +38,29 @@ class iterative_deepening(base_search):
         self.start_time = time.process_time()
         start_node = self.generate(start_state, None, None)
 
-        cost_threshold = start_node.f_
+        ## set initial depth limit here
         depth_threshold = start_node.depth_
+
         # Keep search until reach timelimit.
         while self.runtime_ < self.time_limit_:
             # Set time limit to DLS
             self.tree_search_engine.time_limit_ = self.time_limit_ - self.runtime_
 
-            # Choose which value to limit based on search strategy
-            if threshold_type == ID_threshold.cost:
-                self.tree_search_engine.name = f'cost-{cost_threshold}'
-                solution = self.tree_search_engine.get_path(self.start_, self.goal_, cost_limit=cost_threshold)
-            elif threshold_type == ID_threshold.depth:
-                self.tree_search_engine.name = f'depth-{depth_threshold}'
-                solution = self.tree_search_engine.get_path(self.start_, self.goal_, depth_limit=depth_threshold)
+            # Choose which value to limit based on search strategy, note tree_search_engine is a tree_search implementation
+            # under lib_piglet/search/tree_search. Check the interface of get_path to find what you can use to limit the
+            # search on cost.
+            #
+            ################
+            # Implement cost-threshold iterative deepening (IDA*) here.
+            #
+            # Right now both threshold_type values fall back to depth-limited iterative deepening. When
+            # threshold_type == ID_threshold.cost, limit the tree search on cost (cost_limit=...) instead, initialising the
+            # threshold from start_node.f_ and advancing it to the minimal cost of the unexpanded nodes each iteration.
+            ################
+            solution = self.tree_search_engine.get_path(self.start_, self.goal_, depth_limit=depth_threshold)
+
+            # Search finishes, get the minimal depth of unexpanded nodes as the depth limit of next iteration.
             next_depth = solution[1]
-            next_cost = solution[2]
 
             # Update statistic info
             self.nodes_generated_ += self.tree_search_engine.nodes_generated_
@@ -61,13 +68,11 @@ class iterative_deepening(base_search):
             self.runtime_ = time.process_time() - self.start_time
 
             if solution[0] is None:
-                if (threshold_type == ID_threshold.cost and next_cost == sys.maxsize) \
-                        or (threshold_type == ID_threshold.depth and next_depth == sys.maxsize):
+                if (threshold_type == ID_threshold.depth and next_depth == sys.maxsize):
                     self.solution_ = None
                     self.status_ = "Failed"
                     return None
                 depth_threshold = next_depth
-                cost_threshold = next_cost
             else:
                 self.solution_ = solution[0]
                 self.status_ = "Success"

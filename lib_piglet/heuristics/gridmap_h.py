@@ -20,34 +20,38 @@ def pigelet_multi_agent_heuristic(domain,current_state, goal_state):
     return h
 
 def manhattan_heuristic(domain, current_state, goal_state):
-    return abs(current_state[0] - goal_state[0]) + abs(current_state[1] - goal_state[1])
+    ################
+    # Implement the Manhattan distance between current_state and goal_state here.
+    # current_state and goal_state are (x, y) tuples.
+    ################
+    raise NotImplementedError
 
 def straight_heuristic(domain, current_state, goal_state):
-    return round(math.sqrt((current_state[0] - goal_state[0])**2 + (current_state[1] - goal_state[1])**2), 5)
+    ################
+    # Implement the straight-line (Euclidean) distance here.
+    ################
+    raise NotImplementedError
 
 def octile_heuristic(domain, current_state, goal_state):
-    delta_x = abs(current_state[0] - goal_state[0])
-    delta_y = abs(current_state[1] - goal_state[1])
-    return min(delta_x, delta_y) * math.sqrt(2) + max(delta_x,delta_y) - min(delta_x, delta_y)
+    ################
+    # Implement the octile distance here.
+    ################
+    raise NotImplementedError
 
 
 pivots = {}
 
 
 def differential_heuristic(domain, current_state,goal_state):
-    if len(pivots) == 0:
-        while len(pivots) < 5:
-            random_loc = (random.randint(0,domain.height_), random.randint(0,domain.width_))
-            if domain.get_tile(random_loc):
-                pivots[random_loc] = {}
-        # self.pivots = {(97,6):{}}
-        for pivot in pivots.keys():
-            pivots[pivot] = calculate_distance(domain, pivot)
-    
-    all_h = []
-    for pivot in pivots.keys(): 
-        all_h.append( abs(pivots[pivot][current_state] - pivots[pivot][goal_state]) )
-    return max(all_h)
+    ################
+    # Implement a differential (landmark) heuristic here.
+    #
+    # Pick a set of pivots, precompute the true distance from each pivot to every
+    # tile (calculate_distance below does the precomputation for one pivot), and
+    # combine them into an admissible estimate. Cache the precomputed tables in
+    # the module-level `pivots` dict so you only build them once.
+    ################
+    raise NotImplementedError
 
 def true_dis_heuristic(domain, current_state,goal_state):
     if goal_state not in pivots:

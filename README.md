@@ -6,6 +6,18 @@ Piglet is a library of search algorithms and the domains they run on. It ships a
 tool for running scenarios and generating search traces, and a Python API you can reuse in your own
 code.
 
+> **This is the labs branch.** Several library functions are left as stubs for you to implement
+> during the lab exercises. Until you fill them in, grid searches return no successors and the grid
+> heuristics raise `NotImplementedError`. The stubs are:
+>
+> - `lib_piglet/heuristics/gridmap_h.py` — `manhattan_heuristic`, `straight_heuristic`,
+>   `octile_heuristic`, `differential_heuristic`
+> - `lib_piglet/expanders/grid_expander.py` — `grid_expander.expand` / `get_actions` / `__move`, and
+>   `grid_joint_expander.expand` / `generate_states_recursively`
+> - `lib_piglet/search/iterative_deepening.py` — cost-threshold (IDA\*) support
+>
+> Each stub is marked with an `Implement your codes here` comment.
+
 > **New to terminals, Git or Python environments?** Follow [GETTING_STARTED.md](GETTING_STARTED.md)
 > first — it installs the tooling and ends with a search running on your screen. The rest of this
 > README assumes you are comfortable with the tooling.
