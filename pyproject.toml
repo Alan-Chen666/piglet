@@ -1,7 +1,7 @@
 [project]
 name = "piglet"
 version = "0.1.0"
-description = "A variety of flexible search algorithm implementations, plus the FIT5222 assignment 1 scaffold."
+description = "A variety of flexible search algorithm implementations."
 readme = "README.md"
 requires-python = ">=3.14"
 authors = [
@@ -11,14 +11,10 @@ authors = [
 ]
 dependencies = [
     "pyyaml>=6.0.2",
-    "flatland-spl[native]",
 ]
 
 [project.scripts]
 piglet = "piglet:main"
-
-[tool.uv.sources]
-flatland-spl = { git = "https://github.com/ShortestPathLab/flatland" }
 
 [build-system]
 requires = ["hatchling"]

@@ -1,40 +1,33 @@
 ![banner](./banner.png)
 
-# Piglet — Assignment 1
+# Piglet
 
-Piglet is a library of search algorithms you can reuse in your own code. This branch is the starter scaffold for assignment 1: you implement your path-finding algorithms in `question1.py`, `question2.py` and `question3.py`.
+Piglet is a library of search algorithms and the domains they run on. It ships a small command-line
+tool for running scenarios and generating search traces, and a Python API you can reuse in your own
+code.
 
 > **New to terminals, Git or Python environments?** Follow [GETTING_STARTED.md](GETTING_STARTED.md)
-> instead. It sets the assignment up from scratch and ends with trains moving on your screen. The
-> rest of this README assumes you are comfortable with the tooling.
+> first — it installs the tooling and ends with a search running on your screen. The rest of this
+> README assumes you are comfortable with the tooling.
 
 ## Requirements
 
 - [uv](https://docs.astral.sh/uv/) — the only thing you need to install yourself.
 
-uv provisions the correct Python interpreter (3.14.6, pinned in `.python-version`) and every dependency for you. You do not need to install Python separately.
+uv provisions the correct Python interpreter (3.14.6, pinned in `.python-version`) and every
+dependency for you. You do not need to install Python separately.
 
 ## Setup
 
-Clone the repo, then run a question straight away:
+Clone the repo, then run a scenario straight away:
 
 ```bash
-uv run python question1.py
+uv run piglet -p ./example/example_n_puzzle_scenario.scen -f graph -s uniform
 ```
 
-There is no separate install step. The first `uv run` creates a virtual environment in `.venv` and installs the dependencies, including [Flatland](https://github.com/ShortestPathLab/flatland), the railway simulator the assignment questions run against; this takes a few minutes. Later runs skip it and start immediately. Prefixing a command with `uv run` runs it inside that environment, so there is no `activate` step to remember.
-
-## The assignment
-
-Each question file contains a dummy implementation that always takes the first available transition. Replace it with your own algorithm.
-
-```bash
-uv run python question1.py    # single-agent path finding
-uv run python question2.py    # multi-agent, conflict-free
-uv run python question3.py    # multi-agent with malfunctions and replanning
-```
-
-Set `debug = True` or `visualizer = True` at the top of a question file for more output while you develop.
+There is no separate install step. The first `uv run` creates a virtual environment in `.venv` and
+installs the dependencies; this takes a moment. Later runs skip it and start immediately. Prefixing a
+command with `uv run` runs it inside that environment, so there is no `activate` step to remember.
 
 ## Piglet command line
 
@@ -42,15 +35,17 @@ Set `debug = True` or `visualizer = True` at the top of a question file for more
 uv run piglet --help
 ```
 
-Run a scenario:
+Run a scenario, choosing a domain (`-f`) and a search (`-s`):
 
 ```bash
-uv run piglet -p ./example/example_n_puzzle_scenario.scen -f graph -s uniform
+uv run piglet -p ./example/arena2.min.scen -f graph -s a-star
+uv run piglet -p ./example/arena2.min.scen -f graph -s uniform    # compare the nodes expanded
 ```
 
 ### Generating search traces
 
-Use search traces to analyse and debug algorithms in [Posthoc](https://posthoc.pathfinding.ai). Add the `--log trace` argument to make Piglet output search traces.
+Use search traces to analyse and debug algorithms in [Posthoc](https://posthoc.pathfinding.ai). Add
+the `--log trace` argument to make Piglet output search traces.
 
 ```bash
 uv run piglet -p ./example/arena2.min.scen -f graph -s a-star --log trace
