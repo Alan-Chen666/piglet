@@ -286,7 +286,7 @@ wheels = [
 [[package]]
 name = "flatland-spl"
 version = "2.2.2"
-source = { git = "https://github.com/ShortestPathLab/flatland#64557d5ad065dc2fb859a60432484da94cb3870a" }
+source = { git = "https://github.com/ShortestPathLab/flatland#db9766e6194c8a492d336f22fd5eab7519a19afd" }
 dependencies = [
     { name = "attrs" },
     { name = "matplotlib" },

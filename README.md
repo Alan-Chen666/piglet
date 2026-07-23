@@ -34,7 +34,17 @@ uv run python question2.py    # multi-agent, conflict-free
 uv run python question3.py    # multi-agent with malfunctions and replanning
 ```
 
-Set `debug = True` or `visualizer = True` at the top of a question file for more output while you develop.
+Two switches at the top of each question file control what a run prints and shows. `debug = True` gives a step-by-step account of each episode, and `visualizer = True` opens the simulation so you can watch the trains.
+
+For finer control of the visualiser, assign a `VisualiserOptions` instead of `True`:
+
+```python
+visualizer = VisualiserOptions(delay=0.1, headless=True, wait=False)
+```
+
+`delay` is the pause between timesteps in seconds, `headless=True` serves the run to your browser instead of opening a window, and `wait=False` starts immediately rather than holding the first frame until you are watching. The full set of fields is listed, commented out, at the top of each question file.
+
+Turn the visualiser off for full runs. Rendering every episode is far slower than simulating one, and the scoring table is all you need.
 
 ## Piglet command line
 

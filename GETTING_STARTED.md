@@ -1,5 +1,4 @@
 # 🐷 Getting Started with Piglet
-========
 
 This guide takes you from a fresh computer to Assignment 1 running on your screen, with trains moving
 in a window. It assumes no prior experience with terminals, Git or Python environments; if you have
@@ -333,6 +332,30 @@ or reverse on the spot, which is what makes the assignment a search problem.
 
 > **Turn the visualiser off before a full run.** Rendering 40 or 56 episodes is slow, and you only
 > need the table.
+
+### Changing how the run is displayed
+
+`visualizer = True` uses the default settings. To change them, assign a `VisualiserOptions` instead
+of `True`:
+
+```python
+visualizer = VisualiserOptions(
+    delay=0.3,      # seconds to pause between timesteps; 0 runs at full speed
+    headless=False, # True: no window, serve to your browser instead
+    wait=True,      # hold the first frame until you are watching
+    port=8080,      # serve on a fixed port (headless mode)
+    cell_size=40,   # pixels per grid cell
+)
+```
+
+Every field has a default, so set only the ones you care about. The same block is already at the top
+of each question file, commented out, so you can uncomment it instead of typing it.
+
+`delay` is the one you will change most often. Raise it to follow a train cell by cell; drop it to 0
+when you only want to see roughly where the plan goes wrong. Use `headless=True` if your machine
+cannot open a window: the run is served to your browser straight away, with no window attempt first.
+And `wait=True` holds the very first frame until you have the view open, so a short episode does not
+finish before you have looked at it.
 
 ---
 
