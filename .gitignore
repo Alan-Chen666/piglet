@@ -148,3 +148,5 @@ cython_debug/
 
 # Test output
 **/out/
+
+publish-template.sh
