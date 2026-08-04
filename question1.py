@@ -55,19 +55,19 @@ test = 0
 
 
 #########################
-# Reimplementing the content in get_path() function.
+# Reimplement the contents of the get_path() function.
 #
 # Return a list of (x,y) location tuples which connect the start and goal locations.
 #########################
 
 
-# This function return a list of location tuple as the solution.
+# This function returns a list of location tuples as the solution.
 # @param start A tuple of (x,y) coordinates
-# @param start_direction An Int indicate direction.
+# @param start_direction An int indicating the direction.
 # @param goal A tuple of (x,y) coordinates
 # @param rail The flatland railway GridTransitionMap
 # @param max_timestep The max timestep of this episode.
-# @return path A list of (x,y) tuple.
+# @return path A list of (x,y) tuples.
 def get_path(
     start: tuple,
     start_direction: int,
@@ -76,11 +76,10 @@ def get_path(
     max_timestep: int,
 ):
     ############
-    # Below is an dummy path finding implementation,
-    # which always choose the first available transition of current state.
+    # Below is a dummy path finding implementation,
+    # which always chooses the first available transition from the current state.
     #
-    # Replace these with your implementation and return a list of (x,y) tuple as your plan.
-    # Your plan should avoid conflicts with paths in existing_paths.
+    # Replace it with your implementation and return a list of (x,y) tuples as your plan.
     ############
     path = []
     loc = start
@@ -111,7 +110,7 @@ def get_path(
 
 
 #########################
-# You should not modify codes below, unless you want to modify test_cases to test specific instance. You can read it know how we ran flatland environment.
+# You should not modify the code below, unless you want to change test_cases to test a specific instance. You can read it to see how we run the flatland environment.
 ########################
 if __name__ == "__main__":
     if len(sys.argv) > 1:

@@ -1,3 +1,7 @@
+"""
+This is the python script for question 3. In this script, you are required to implement a multi agent path-finding algorithm that also replans when agents malfunction
+"""
+
 from lib_piglet.utils.tools import eprint
 from typing import List, Tuple
 import glob, os, sys, time, json
@@ -53,26 +57,26 @@ level = 0
 test = 0
 
 #########################
-# Reimplementing the content in get_path() function and replan() function.
+# Reimplement the contents of the get_path() function and the replan() function.
 #
 # They both return a list of paths. A path is a list of (x,y) location tuples.
-# The path should be conflict free.
-# Hint, you could use some global variables to reuse many resources across get_path/replan frunction calls.
+# The paths should be conflict free.
+# Hint, you could use some global variables to reuse resources across get_path/replan function calls.
 #########################
 
 
-# This function return a list of location tuple as the solution.
-# @param env The flatland railway environment
+# This function returns one path per agent as the solution.
 # @param agents A list of EnvAgent.
+# @param rail The flatland railway GridTransitionMap
 # @param max_timestep The max timestep of this episode.
-# @return path A list of (x,y) tuple.
+# @return path_all A list of paths, one per agent, each a list of (x,y) tuples.
 def get_path(agents: List[EnvAgent], rail: GridTransitionMap, max_timestep: int):
     ############
-    # Below is an dummy path finding implementation,
-    # which always choose the first available transition of current state.
+    # Below is a dummy path finding implementation,
+    # which always chooses the first available transition from the current state.
     #
-    # Replace these with your implementation and return a list of paths. Each path is a list of (x,y) tuple as your plan.
-    # Your plan should avoid conflicts with each other.
+    # Replace it with your implementation and return a list of paths. Each path is a list of (x,y) tuples as your plan.
+    # Your plan should avoid conflicts between the paths.
     ############
 
     # initialize path list
@@ -127,20 +131,20 @@ def get_path(agents: List[EnvAgent], rail: GridTransitionMap, max_timestep: int)
     return path_all
 
 
-# This function return a list of location tuple as the solution.
-# @param rail The flatland railway GridTransitionMap
+# This function returns one updated path per agent as the solution.
 # @param agents A list of EnvAgent.
-# @param current_timestep The timestep that malfunction/collision happens .
-# @param existing_paths The existing paths from previous get_plan or replan.
+# @param rail The flatland railway GridTransitionMap
+# @param current_timestep The timestep at which the malfunction/collision happens.
+# @param existing_paths The existing paths from the previous get_path or replan.
 # @param max_timestep The max timestep of this episode.
-# @param new_malfunction_agents  The id of agents have new malfunction happened at current time step (Does not include agents already have malfunciton in past timesteps)
-# @param failed_agents  The id of agents failed to reach the location on its path at current timestep.
-# @return path_all  Return paths that locaitons from current_timestp is updated to handle malfunctions and failed execuations.
+# @param new_malfunction_agents The ids of the agents whose malfunction started at the current timestep (does not include agents that were already malfunctioning in past timesteps)
+# @param failed_agents The ids of the agents that failed to reach the location on their path at the current timestep.
+# @return path_all A list of paths whose locations from current_timestep onwards are updated to handle the malfunctions and failed executions.
 def replan(
     agents: List[EnvAgent],
     rail: GridTransitionMap,
     current_timestep: int,
-    existing_paths: List[Tuple],
+    existing_paths: List[List[Tuple]],
     max_timestep: int,
     new_malfunction_agents: List[int],
     failed_agents: List[int],
@@ -152,7 +156,7 @@ def replan(
 
 #####################################################################
 # Instantiate a Remote Client
-# You should not modify codes below, unless you want to modify test_cases to test specific instance.
+# You should not modify the code below, unless you want to change test_cases to test a specific instance.
 #####################################################################
 if __name__ == "__main__":
     if len(sys.argv) > 1:
