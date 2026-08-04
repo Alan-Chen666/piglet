@@ -67,7 +67,8 @@ test = 0
 # @param goal A tuple of (x,y) coordinates
 # @param rail The flatland railway GridTransitionMap
 # @param agent_id The id of given agent
-# @param existing_paths A list of lists of locations indicate existing paths. The index of each location is the time that
+# @param existing_paths A list of lists of locations indicate existing paths. The index of each
+#        location is the timestep at which that agent occupies the location.
 # @param max_timestep The max timestep of this episode.
 # @return path A list of (x,y) tuple.
 def get_path(
