@@ -286,7 +286,7 @@ wheels = [
 [[package]]
 name = "flatland-spl"
 version = "2.2.2"
-source = { git = "https://github.com/ShortestPathLab/flatland?branch=dev%2Fcontroller-scoring#045da272e1fdfc628c2fc60a090e34e1bf00cb38" }
+source = { git = "https://github.com/ShortestPathLab/flatland?branch=dev%2Fcontroller-scoring#a7a43250622e70ed9be70b07bd593884cf39cd90" }
 dependencies = [
     { name = "attrs" },
     { name = "matplotlib" },
