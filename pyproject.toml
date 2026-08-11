@@ -18,7 +18,7 @@ dependencies = [
 piglet = "piglet:main"
 
 [tool.uv.sources]
-flatland-spl = { git = "https://github.com/ShortestPathLab/flatland" }
+flatland-spl = { git = "https://github.com/ShortestPathLab/flatland", branch = "dev/controller-scoring" }
 
 [build-system]
 requires = ["hatchling"]
