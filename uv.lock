@@ -286,7 +286,7 @@ wheels = [
 [[package]]
 name = "flatland-spl"
 version = "2.2.2"
-source = { git = "https://github.com/ShortestPathLab/flatland?branch=dev%2Fcontroller-scoring#a7a43250622e70ed9be70b07bd593884cf39cd90" }
+source = { git = "https://github.com/ShortestPathLab/flatland?branch=dev%2Fbugfix#5783cd940f8cb0188f1eca7fa745357d56be3543" }
 dependencies = [
     { name = "attrs" },
     { name = "matplotlib" },
@@ -838,7 +838,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "flatland-spl", extras = ["native"], git = "https://github.com/ShortestPathLab/flatland?branch=dev%2Fcontroller-scoring" },
+    { name = "flatland-spl", extras = ["native"], git = "https://github.com/ShortestPathLab/flatland?branch=dev%2Fbugfix" },
     { name = "pyyaml", specifier = ">=6.0.2" },
 ]
 
